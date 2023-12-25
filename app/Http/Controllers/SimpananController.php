@@ -165,10 +165,12 @@ class SimpananController extends Controller
         $request->validate([
             'anggota_id' => 'required|exists:anggota,id',
             'nominal' => 'required|numeric',
+            'jenis_simpanan_id' => 'required|exists:jenis_simpanan,id',
             'keterangan' => 'max:200',
         ]);
 
-        $cek_jumlah = Simpanan::select(DB::raw('SUM(nominal) as total_simpanan'))->where('anggota_id', $request->anggota_id)->where('jenis_simpanan_id', 3)->first();
+        $cek_jumlah = Simpanan::select(DB::raw('SUM(nominal) as total_simpanan'))->where('anggota_id', $request->anggota_id)->where('jenis_simpanan_id', $request->jenis_simpanan_id)->first();
+
         $saldo = $cek_jumlah->total_simpanan;
         $ambil = $request->nominal;
         if ($saldo < $ambil) {

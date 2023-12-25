@@ -99,13 +99,16 @@
                         </li>
                         <li class="nav-item {{ (Request::route()->getName() == 'simpanan.index') ? 'active' : '' }}"><a
                                 class="nav-link" href="/admin/simpanan"><span>Data simpanan</span></a></li>
-                        <li class="nav-item {{ (Request::route()->getName() == 'simpanan.anggota') ? 'active' : '' }}">
+                        {{-- <li
+                            class="nav-item {{ (Request::route()->getName() == 'simpanan.anggota') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('simpanan.anggota') }}"><span>Data simpanan per
-                                    anggota</span></a></li>
+                                    anggota</span></a>
+                        </li> --}}
                         <li
                             class="nav-item {{ (Request::route()->getName() == 'simpanan.penarikan') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('simpanan.penarikan') }}"><span>Penarikan
-                                    simpanan</span></a></li>
+                                    simpanan</span></a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -163,13 +166,14 @@
                     <span>Pengaturan</span>
                 </a>
             </li>
-            {{--             
+            {{--
             <li class="nav-item {{ (Request::route()->getName() == 'simpanan.index') ? 'active' : '' }}">
-            <a href="{{ route('simpanan.index') }}" class="nav-link">
-                <span class="sidebar-icon"><span class="fas fa-database"></span></span>
-                <span>Data Simpanan</span>
-            </a> --}}
-            {{-- </li> --}}
+                <a href="{{ route('simpanan.index') }}" class="nav-link">
+                    <span class="sidebar-icon"><span class="fas fa-database"></span></span>
+                    <span>Data Simpanan</span>
+                </a> --}}
+                {{--
+            </li> --}}
             @endcan
 
 
