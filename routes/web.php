@@ -15,8 +15,6 @@ Route::prefix('admin')
         Route::get('pengaturan', 'Admin\DashboardController@pengaturan')->name('admin.pengaturan');
         Route::put('update-pengaturan/{user}', 'Admin\DashboardController@update_pengaturan')->name('admin.update-pengaturan');
 
-        // Route::get('/rekap/anggota', 'SimpananController@anggota')->name('simpanan.anggota');
-        // Route::get('/rekap/anggota/cari', 'SimpananController@cari_anggota')->name('cari.anggota');
         Route::resource('pinjaman', 'PinjamanController');
         Route::get('bayar-pinjaman/{id}', 'PinjamanController@bayar_pinjaman')->name('pinjaman.bayar');
         Route::get('bayar-pinjaman/{id}/{bayarpinjamid}', 'PinjamanController@bayar_pinjaman_detail')->name('pinjaman.bayar.detail');

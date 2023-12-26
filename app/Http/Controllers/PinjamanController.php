@@ -20,9 +20,8 @@ class PinjamanController extends Controller
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
-                    if ($item->status == 'pending') {
-                        return
-                            '    <div class="btn-group">
+                    return
+                        '    <div class="btn-group">
                 <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="icon icon-sm">
                         <span class="fas fa-ellipsis-h icon-dark"></span>
@@ -30,7 +29,8 @@ class PinjamanController extends Controller
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="action' .  $item->id . '">
-                    <a class="dropdown-item" href="' . route('pinjaman.edit', $item->id) . '"><span class="fas fa-eye mr-2"></span>Details</a>
+                    <a class="dropdown-item" href="' . route('pinjaman.bayar', $item->id) . '"><span class="fas fa-eye mr-2"></span>Angsuran</a>
+                    <a class="dropdown-item" href="' . route('pinjaman.edit', $item->id) . '"><span class="fas fa-eye mr-2"></span>Detail</a>
                     <form action="' . route('pinjaman.destroy', $item->id) . '" method="POST">
                                         ' . method_field('delete') . csrf_field() . '
                                         <button type="submit" class="dropdown-item text-danger">
@@ -38,21 +38,7 @@ class PinjamanController extends Controller
                                         </button>
                                     </form>
                 </div>
-            </div>';
-                    } elseif ($item->status == 'lunas' || $item->status == 'belum_lunas') {
-                        return
-                            '<div class="btn-group">
-                <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="icon icon-sm">
-                        <span class="fas fa-ellipsis-h icon-dark"></span>
-                    </span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="action' .  $item->id . '">
-                    <a class="dropdown-item" href="' . route('pinjaman.edit', $item->id) . '"><span class="fas fa-eye mr-2"></span>Details</a>
-                </div>
-            </div>';
-                    }
+                </div>';
                 })
                 ->editColumn('created_at', function ($item) {
                     return $item->created_at->format('d F Y');
@@ -198,6 +184,20 @@ class PinjamanController extends Controller
         $data_pinjaman = Pinjaman::find($id);
         $detail_pinjaman = BayarPinjaman::where('pinjaman_id', $data_pinjaman->id)->get();
         $count_sudah_bayar = BayarPinjaman::where('pinjaman_id', $data_pinjaman->id)->whereNotNull('tanggal_bayar')->count();
+
+        foreach ($detail_pinjaman as $pinjaman) {
+            $tempo = Carbon::parse($pinjaman->jatuh_tempo);
+            $today = Carbon::now('Asia/Jakarta');
+
+            if ($tempo < $today) {
+                $selisih = $tempo->diffInDays($today);
+                $telat_hari = $selisih;
+                $pinjaman['denda'] = 1000 * $selisih;
+            } else {
+                $telat_hari = 0;
+                $pinjaman['denda'] = 0;
+            }
+        }
 
         $total_bayar = $data_pinjaman->bayar_perbulan * $count_sudah_bayar;
 
