@@ -13,25 +13,6 @@
             </div>
             <!-- Navbar links -->
             <ul class="navbar-nav align-items-center">
-                <li class="nav-item dropdown">
-                    <a class="nav-link text-dark mr-lg-3 icon-notifications" data-unread-notifications="true" href="#"
-                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="icon icon-sm">
-                            <span class="fas fa-bell bell-shake"></span>
-                            <span class="icon-badge rounded-circle unread-notifications"></span>
-                        </span>
-                    </a>
-                    <div class="dropdown-menu dashboard-dropdown dropdown-menu-lg dropdown-menu-center mt-2 py-0">
-                        <div class="list-group list-group-flush">
-                            <a href="#"
-                                class="text-center text-primary font-weight-bold border-bottom border-light py-3">Notifications</a>
-
-                            <a href="#" class="dropdown-item text-center text-primary font-weight-bold py-3">View
-                                all</a>
-                        </div>
-                    </div>
-                </li>
-
                 @can('isAdmin')
                 <li class="nav-item dropdown">
                     <a class="nav-link pt-1 px-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
