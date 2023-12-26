@@ -32,7 +32,7 @@
     <div class="card-body">
         <div class="row">
 
-            <table class="table table-hover" id="jenisSimpanan">
+            <table class="table table-hover" id="dataPengaturan">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -60,7 +60,7 @@
 
 <script>
     // AJAX DataTable
-    var datatable = $('#jenisSimpanan').DataTable({
+    var datatable = $('#dataPengaturan').DataTable({
         processing: true,
         serverSide: true,
         ordering: true,

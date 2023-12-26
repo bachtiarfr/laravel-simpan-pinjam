@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Anggota;
-use App\JenisSimpanan;
-use App\Simpanan;
+use App\JenisKelompok;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -57,9 +56,8 @@ class AnggotaController extends Controller
 
     public function create()
     {
-
-        $min_simpanan = JenisSimpanan::find(1);
-        return view('admin.member.anggota_create', compact('min_simpanan'));
+        $jenis_kelompok = JenisKelompok::all();
+        return view('admin.member.anggota_create', compact('jenis_kelompok'));
     }
 
     public function store(Request $request)
@@ -67,34 +65,25 @@ class AnggotaController extends Controller
         $request->validate([
             'no_ktp' => 'required|unique:anggota|digits:16',
             'nama_anggota' => 'required|string|max:100',
-            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'alamat' => 'required|max:200',
             'kota' => 'required|max:20',
             'telepon' => 'required|max:12',
-            'pengurus' => 'required|in:pengurus,bukan_pengurus',
+            'jenis_kelompok_id' => 'required|numeric',
         ]);
 
-        // Anggota::create($data);
-        $min_simpanan = JenisSimpanan::find(1);
+
 
         $anggota = new Anggota;
         $anggota->no_ktp = $request->no_ktp;
         $anggota->nama_anggota = $request->nama_anggota;
-        $anggota->jenis_kelamin = $request->jenis_kelamin;
         $anggota->alamat = $request->alamat;
         $anggota->kota = $request->kota;
         $anggota->telepon = $request->telepon;
-        $anggota->pengurus = $request->pengurus;
+        $anggota->jenis_kelompok_id = $request->jenis_kelompok_id;
         $anggota->save();
 
-        $simpanan = new Simpanan;
-        // $simpanan->anggota_id = $anggota->id;
-        $simpanan->jenis_simpanan_id = $min_simpanan->id;
-        $simpanan->nominal = $min_simpanan->minimal_simpan;
-        $simpanan->keterangan = 'Simpanan wajib saat pendaftaran';
 
-        $anggota->simpanan()->save($simpanan);
-
+        //TODO add redirect to anggota list and has notification
         return redirect()->route('anggota.create')->with(['status' => 'Data Anggota Berhasil Ditambahkan']);
     }
 

@@ -76,18 +76,18 @@
                             <div class="icon icon-shape icon-md icon-shape-blue rounded mr-4 mr-sm-0"><span
                                     class="fas fa-book"></span></div>
                         </div>
-                        <div class="col-12 col-xl-7 px-xl-0">
+                        {{-- <div class="col-12 col-xl-7 px-xl-0">
                             <div class="d-none d-sm-block">
                                 <h2 class="h5">Data Simpanan</h2>
                                 <h3 class="mb-1">{{ $simpanan }}</h3>
-                            </div>
-                            {{-- <small>Feb 1 - Apr 1, <span class="icon icon-small"><span
+                            </div> 
+                             <small>Feb 1 - Apr 1, <span class="icon icon-small"><span
                                         class="fas fa-globe-europe"></span></span> WorldWide</small>
                             <div class="small mt-2">
                                 <span class="fas fa-angle-up text-success"></span>
                                 <span class="text-success font-weight-bold">18.2%</span> Since last month
-                            </div> --}}
-                        </div>
+                            </div> 
+                        {{-- </div> --}}
                     </div>
                 </div>
             </div>

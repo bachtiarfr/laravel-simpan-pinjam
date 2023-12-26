@@ -15,7 +15,6 @@ class DashboardController extends Controller
     {
         $data = [
             'pinjaman' => Pinjaman::all()->count(),
-            'simpanan' => Simpanan::all()->count(),
             'anggota'  => Anggota::all()->count(),
             'user'     => User::all()->count(),
         ];

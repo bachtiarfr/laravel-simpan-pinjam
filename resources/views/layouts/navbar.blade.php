@@ -79,39 +79,6 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
-                    data-toggle="collapse" data-target="#simpanan-app">
-                    <span>
-                        <span class="sidebar-icon"><span class="fas fa-database"></span></span>
-                        Simpanan
-                    </span>
-                    <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
-                </span>
-                <div class="multi-level collapse {{ (Request::route()->getName() == 'simpanan.index') ||
-                                                    (Request::route()->getName() == 'simpanan.create') || 
-
-                                                    (Request::route()->getName() == 'simpanan.show')  ? 'show' : '' }}"
-                    role="list" id="simpanan-app" aria-expanded="false">
-                    <ul class="flex-column nav">
-                        <li class="nav-item {{ (Request::route()->getName() == 'simpanan.create') ? 'active' : '' }}"><a
-                                class="nav-link" href="{{ route('simpanan.create') }}"><span>Tambah simpanan</span></a>
-                        </li>
-                        <li class="nav-item {{ (Request::route()->getName() == 'simpanan.index') ? 'active' : '' }}"><a
-                                class="nav-link" href="/admin/simpanan"><span>Data simpanan</span></a></li>
-                        {{-- <li
-                            class="nav-item {{ (Request::route()->getName() == 'simpanan.anggota') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('simpanan.anggota') }}"><span>Data simpanan per
-                                    anggota</span></a>
-                        </li> --}}
-                        <li
-                            class="nav-item {{ (Request::route()->getName() == 'simpanan.penarikan') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('simpanan.penarikan') }}"><span>Penarikan
-                                    simpanan</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
 
             {{-- Sidebar Ketua --}}
             @elsecan('isKetua')
@@ -146,34 +113,36 @@
                 </div>
             </li>
 
-            <li class="nav-item {{ request()->is('ketua/jenis-simpanan*') ? 'active' : '' }}">
-                <a href="{{ route('jenis-simpanan.index') }}" class="nav-link">
-                    <span class="sidebar-icon"><span class="fas fa-book"></span></span>
-                    <span>Jenis Simpanan</span>
-                </a>
-            </li>
-
             <li class="nav-item {{ request()->is('ketua/pinjaman-ketua*') ? 'active' : '' }}">
                 <a href="{{ route('pinjaman-ketua.index') }}" class="nav-link">
                     <span class="sidebar-icon"><span class="fas fa-database"></span></span>
                     <span>Data Pinjaman</span>
                 </a>
             </li>
-
-            <li class="nav-item {{ request()->is('ketua/pengaturan*') ? 'active' : '' }}">
-                <a href="{{ route('pengaturan.index') }}" class="nav-link">
-                    <span class="sidebar-icon"><span class="fas fa-anchor"></span></span>
-                    <span>Pengaturan</span>
-                </a>
+            
+            <li class="nav-item">
+                <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                    data-toggle="collapse" data-target="#submenu-pengaturan">
+                    <span>
+                        <span class="sidebar-icon"><span class="fas fa-cog"></span></span>
+                        Pengaturan
+                    </span>
+                    <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
+                </span>
+                <div class="multi-level collapse {{ (Request::route()->getName() == 'pengaturan.index') ||
+                                        (Request::route()->getName() == 'pengaturan.create') || 
+                                        (Request::route()->getName() == 'pengaturan.show')  ? 'show' : '' }}" role="list"
+                    id="submenu-pengaturan" aria-expanded="false">
+                    <ul class="flex-column nav">
+                        <li class="nav-item {{ (Request::route()->getName() == 'pengaturan.index') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('pengaturan.index') }}"><span>Data Pengaturan</span></a>
+                        </li>
+                        <li class="nav-item {{ (Request::route()->getName() == 'pengaturan.create') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('pengaturan.create') }}"><span>Tambah Pengaturan</span></a>
+                        </li>
+                    </ul>
+                </div>
             </li>
-            {{--
-            <li class="nav-item {{ (Request::route()->getName() == 'simpanan.index') ? 'active' : '' }}">
-                <a href="{{ route('simpanan.index') }}" class="nav-link">
-                    <span class="sidebar-icon"><span class="fas fa-database"></span></span>
-                    <span>Data Simpanan</span>
-                </a> --}}
-                {{--
-            </li> --}}
             @endcan
 
 

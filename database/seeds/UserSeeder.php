@@ -28,5 +28,13 @@ class UserSeeder extends Seeder
             'password' => bcrypt('akudewe123'),
             'roles' => 'ketua'
         ]);
+
+        User::insert([
+            'name' => 'ireng banget wir',
+            'email' => 'jawiricikiwir@gmail.com',
+            'image' => 'jawir.jpg',
+            'password' => bcrypt('jomokbangetwir'),
+            'roles' => 'ketua'
+        ]);
     }
 }

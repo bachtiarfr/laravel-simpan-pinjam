@@ -27,8 +27,8 @@ class PengaturanController extends Controller
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="action' .  $item->id . '">
-                        <a class="dropdown-item" href="' . route('jenis-simpanan.edit', $item->id) . '"><span class="fas fa-eye mr-2"></span>Details</a>
-                        <form action="' . route('jenis-simpanan.destroy', $item->id) . '" method="POST">
+                        <a class="dropdown-item" href="' . route('pengaturan.edit', $item->id) . '"><span class="fas fa-eye mr-2"></span>Details</a>
+                        <form action="' . route('pengaturan.destroy', $item->id) . '" method="POST">
                                             ' . method_field('delete') . csrf_field() . '
                                             <button type="submit" class="dropdown-item text-danger">
                                             <span class="fas fa-trash-alt mr-2"></span>Hapus</a>
@@ -57,20 +57,21 @@ class PengaturanController extends Controller
 
     public function create()
     {
-        return view('ketua.pengaturan.create');
+        return view('ketua.pengaturan.create_pengaturan_ketua');
     }
 
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama_simpanan' => 'required',
-            'minimal_simpan' => 'required|numeric'
+            'waktu_pinjaman' => 'required|numeric',
+            'max_pinjaman' => 'required|numeric',
+            'jasa_pinjam' => 'required|numeric'
         ]);
 
         Pengaturan::create($request->all());
         return redirect()->route('pengaturan.index')
-            ->with(['status' => 'Data Jenis Simpanan Berhasil Ditambahkan']);
+            ->with(['status' => 'Data Jenis Pinjaman Berhasil Ditambahkan']);
     }
 
 
@@ -94,7 +95,7 @@ class PengaturanController extends Controller
         ]);
 
         $data = $request->all();
-        
+
         $pengaturan->update($data);
         return redirect()->route('jenis-simpanan.index')
             ->with(['status' => 'Data Jenis Simpanan Berhasil Diupdate']);
