@@ -37,20 +37,20 @@
                     data-toggle="collapse" data-target="#submenu-app">
                     <span>
                         <span class="sidebar-icon"><span class="fas fa-users"></span></span>
-                        Anggota
+                        Kelompok
                     </span>
                     <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                 </span>
-                <div class="multi-level collapse {{ (Request::route()->getName() == 'anggota.index') ||
-                                        (Request::route()->getName() == 'anggota.create') || 
-                                        (Request::route()->getName() == 'anggota.show')  ? 'show' : '' }}" role="list"
+                <div class="multi-level collapse {{ (Request::route()->getName() == 'kelompok.index') ||
+                                        (Request::route()->getName() == 'kelompok.create') || 
+                                        (Request::route()->getName() == 'kelompok.show')  ? 'show' : '' }}" role="list"
                     id="submenu-app" aria-expanded="false">
                     <ul class="flex-column nav">
-                        <li class="nav-item {{ (Request::route()->getName() == 'anggota.index') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('anggota.index') }}"><span>Data Anggota</span></a>
+                        <li class="nav-item {{ (Request::route()->getName() == 'kelompok.index') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('kelompok.index') }}"><span>Data Kelompok</span></a>
                         </li>
-                        <li class="nav-item {{ (Request::route()->getName() == 'anggota.create') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('anggota.create') }}"><span>Tambah Anggota</span></a>
+                        <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('kelompok.create') }}"><span>Tambah Kelompok</span></a>
                         </li>
                     </ul>
                 </div>

@@ -4,12 +4,41 @@
 
 @section('content')
 
+@if (session('status'))
+@push('scripts')
+<script>
+    swal({
+        title: "Good job!",
+        text: "{{ session('status') }}",
+        icon: "success",
+        button: false,
+        timer: 3000
+    });
+
+</script>
+@endpush
+@endif
+
+@if(session('error'))
+@push('scripts')
+<script>
+    swal({
+        title: "Sorry",
+        text: "{{ session('error') }}",
+        icon: "error",
+        button: false,
+        timer: 3000
+    });
+</script>
+@endpush
+@endif
+
 <div class="py-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
             <li class="breadcrumb-item"><a href="#"><span class="fas fa-home"></span></a></li>
-            <li class="breadcrumb-item"><a href="#">Anggota</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Data Anggota</li>
+            <li class="breadcrumb-item"><a href="#">Kelompok</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data Kelompok</li>
         </ol>
     </nav>
 
@@ -26,9 +55,8 @@
                             <th>#</th>
                             <th>No. kTP</th>
                             <th>Nama</th>
-                            <th>Kota</th>
                             <th>Telepon</th>
-                            <th>Status</th>
+                            <th>Jenis Kelompok</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -64,20 +92,16 @@
                 name: 'no_ktp'
             },
             {
-                data: 'nama_anggota',
-                name: 'nama_anggota'
-            },
-            {
-                data: 'kota',
-                name: 'kota'
+                data: 'nama_kelompok',
+                name: 'nama_kelompok'
             },
             {
                 data: 'telepon',
                 name: 'telepon'
             },
             {
-                data: 'pengurus',
-                name: 'pengurus'
+                data: 'jenis_kelompok',
+                name: 'jenis_kelompok'
             },
             {
                 data: 'action',

@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Anggota;
+use App\Kelompok;
 use App\JenisKelompok;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class AnggotaController extends Controller
+class KelompokController extends Controller
 {
 
     public function index()
     {
         if (request()->ajax()) {
-            $query = Anggota::query();
+            $query = Kelompok::select('kelompok.id', 'kelompok.no_ktp', 'kelompok.nama_kelompok', 'kelompok.alamat', 'kelompok.telepon', 'kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok')->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'kelompok.jenis_kelompok_id');            
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
@@ -29,10 +29,10 @@ class AnggotaController extends Controller
                                         Aksi
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="action' .  $item->id . '">
-                                    <a class="dropdown-item" href="' . route('anggota.edit', $item->id) . '">
+                                    <a class="dropdown-item" href="' . route('kelompok.edit', $item->id) . '">
                                         Sunting
                                     </a>
-                                    <form action="' . route('anggota.destroy', $item->id) . '" method="POST">
+                                    <form action="' . route('kelompok.destroy', $item->id) . '" method="POST">
                                         ' . method_field('delete') . csrf_field() . '
                                         <button type="submit" class="dropdown-item text-danger">
                                             Hapus
@@ -51,77 +51,72 @@ class AnggotaController extends Controller
                 ->make();
         }
 
-        return view('admin.member.anggota_index');
+        return view('kelompok.kelompok_index');
     }
 
     public function create()
     {
         $jenis_kelompok = JenisKelompok::all();
-        return view('admin.member.anggota_create', compact('jenis_kelompok'));
+        return view('kelompok.kelompok_create', compact('jenis_kelompok'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'no_ktp' => 'required|unique:anggota|digits:16',
-            'nama_anggota' => 'required|string|max:100',
+            'no_ktp' => 'required|unique:kelompok|digits:16',
+            'nama_kelompok' => 'required|string|max:100',
             'alamat' => 'required|max:200',
-            'kota' => 'required|max:20',
             'telepon' => 'required|max:12',
             'jenis_kelompok_id' => 'required|numeric',
         ]);
 
 
 
-        $anggota = new Anggota;
-        $anggota->no_ktp = $request->no_ktp;
-        $anggota->nama_anggota = $request->nama_anggota;
-        $anggota->alamat = $request->alamat;
-        $anggota->kota = $request->kota;
-        $anggota->telepon = $request->telepon;
-        $anggota->jenis_kelompok_id = $request->jenis_kelompok_id;
-        $anggota->save();
+        $kelompok = new Kelompok;
+        $kelompok->no_ktp = $request->no_ktp;
+        $kelompok->nama_kelompok = $request->nama_kelompok;
+        $kelompok->alamat = $request->alamat;
+        $kelompok->telepon = $request->telepon;
+        $kelompok->jenis_kelompok_id = $request->jenis_kelompok_id;
+        $kelompok->save();
 
 
-        //TODO add redirect to anggota list and has notification
-        return redirect()->route('anggota.create')->with(['status' => 'Data Anggota Berhasil Ditambahkan']);
+        //TODO add redirect to kelompok list and has notification
+        return redirect()->route('kelompok.index')->with(['status' => 'Data kelompok berhasil ditambahkan']);
     }
 
-    public function show(Anggota $anggota)
+    public function show(Kelompok $kelompok)
     {
         //
     }
 
-    public function edit($anggotum)
+    public function edit($k)
     {
-        $anggota = Anggota::Find($anggotum);
-        return view('admin.member.anggota_show', compact('anggota'));
+        $kelompok = Kelompok::Find($k);
+        return view('kelompok.kelompok_show', compact('kelompok'));
     }
 
-    public function update(Request $request, $anggotum)
+    public function update(Request $request, $k)
     {
         $request->validate([
-            'no_ktp' => 'required|digits:16|unique:anggota,no_ktp,' . $anggotum,
-            'nama_anggota' => 'required',
-            'jenis_kelamin' => 'required',
+            'no_ktp' => 'required|digits:16|unique:kelompok,no_ktp,' . $k,
+            'nama_kelompok' => 'required',
             'alamat' => 'required',
-            'kota' => 'required',
             'telepon' => 'required',
-            'pengurus' => 'required'
         ]);
 
-        $anggota = Anggota::findOrFail($anggotum);
+        $kelompok = Kelompok::findOrFail($k);
         $data = $request->all();
 
-        $anggota->update($data);
-        return redirect()->route('anggota.index')->with(['status' => 'Data Berhasil Diubah']);
+        $kelompok->update($data);
+        return redirect()->route('kelompok.index')->with(['status' => 'Data Berhasil Diubah']);
     }
 
-    public function destroy($anggotum)
+    public function destroy($k)
     {
-        $anggota = Anggota::findOrFail($anggotum);
-        $anggota->forceDelete();
-        return redirect()->route('anggota.index')
-            ->with(['status' => 'Data unit Berhasil Dihapus']);
+        $kelompok = Kelompok::findOrFail($k);
+        $kelompok->forceDelete();
+        return redirect()->route('kelompok.index')
+            ->with(['status' => 'Data Kelompok Berhasil Dihapus']);
     }
 }

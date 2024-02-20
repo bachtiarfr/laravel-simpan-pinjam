@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Ketua;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\JenisSimpanan;
+use App\Pengaturan;
 use Yajra\DataTables\Facades\DataTables;
 
-class JenisSimpananController extends Controller
+
+class PengaturanController extends Controller
 {
 
     public function index()
     {
         if (request()->ajax()) {
-            $query = JenisSimpanan::query();
+            $query = Pengaturan::query();
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
@@ -26,8 +27,8 @@ class JenisSimpananController extends Controller
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="action' .  $item->id . '">
-                        <a class="dropdown-item" href="' . route('jenis-simpanan.edit', $item->id) . '"><span class="fas fa-eye mr-2"></span>Details</a>
-                        <form action="' . route('jenis-simpanan.destroy', $item->id) . '" method="POST">
+                        <a class="dropdown-item" href="' . route('pengaturan.edit', $item->id) . '"><span class="fas fa-eye mr-2"></span>Details</a>
+                        <form action="' . route('pengaturan.destroy', $item->id) . '" method="POST">
                                             ' . method_field('delete') . csrf_field() . '
                                             <button type="submit" class="dropdown-item text-danger">
                                             <span class="fas fa-trash-alt mr-2"></span>Hapus</a>
@@ -36,34 +37,41 @@ class JenisSimpananController extends Controller
                     </div>
                 </div>';
                 })
-                ->editColumn('minimal_simpan', function ($item) {
-                    return "Rp." . number_format($item->minimal_simpan, 0, ',', '.');
+                ->editColumn('waktu_pinjaman', function ($item) {
+                    return $item->waktu_pinjaman . " Bulan";
+                })
+                ->editColumn('max_pinjaman', function ($item) {
+                    return "Rp." . number_format($item->max_pinjaman, 0, ',', '.');
+                })
+                ->editColumn('jasa_pinjam', function ($item) {
+                    return $item->jasa_pinjam . " %";
                 })
                 ->rawColumns(['action', 'status'])
                 ->make();
         }
 
-        return view('ketua.jenis_simpanan.index');
+        return view('ketua.pengaturan.index');
     }
 
 
 
     public function create()
     {
-        return view('ketua.jenis_simpanan.create');
+        return view('ketua.pengaturan.create_pengaturan_ketua');
     }
 
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama_simpanan' => 'required',
-            'minimal_simpan' => 'required|numeric'
+            'waktu_pinjaman' => 'required|numeric',
+            'max_pinjaman' => 'required|numeric',
+            'jasa_pinjam' => 'required|numeric'
         ]);
 
-        JenisSimpanan::create($request->all());
-        return redirect()->route('jenis_simpanan.index')
-            ->with(['status' => 'Data Jenis Simpanan Berhasil Ditambahkan']);
+        Pengaturan::create($request->all());
+        return redirect()->route('pengaturan.index')
+            ->with(['status' => 'Data Jenis Pinjaman Berhasil Ditambahkan']);
     }
 
 
@@ -74,12 +82,12 @@ class JenisSimpananController extends Controller
 
     public function edit($id)
     {
-        $simpanan = JenisSimpanan::findOrFail($id);
-        return view('ketua.jenis_simpanan.show', compact('simpanan'));
+        $simpanan = Pengaturan::findOrFail($id);
+        return view('ketua.pengaturan.show', compact('simpanan'));
     }
 
 
-    public function update(Request $request, JenisSimpanan $jenisSimpanan)
+    public function update(Request $request, Pengaturan $pengaturan)
     {
         $request->validate([
             'nama_simpanan' => 'required',
@@ -87,15 +95,16 @@ class JenisSimpananController extends Controller
         ]);
 
         $data = $request->all();
-        $jenisSimpanan->update($data);
+
+        $pengaturan->update($data);
         return redirect()->route('jenis-simpanan.index')
             ->with(['status' => 'Data Jenis Simpanan Berhasil Diupdate']);
     }
 
 
-    public function destroy(JenisSimpanan $jenisSimpanan)
+    public function destroy(Pengaturan $pengaturan)
     {
-        $jenisSimpanan->delete();
+        $pengaturan->delete();
         return redirect()->back();
     }
 }

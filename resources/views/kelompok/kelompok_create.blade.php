@@ -1,43 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Anggota')
+@section('title', 'Tambah Kelompok')
 
 @section('content')
-
-@if (session('success'))
-@push('scripts')
-<script>
-    swal({
-        title: "Good job!",
-        text: "{{ session('success') }}",
-        icon: "success",
-        button: false,
-        timer: 2000
-    });
-</script>
-@endpush
-
-@elseif(session('error'))
-@push('scripts')
-<script>
-    swal({
-        title: "Sorry",
-        text: "{{ session('error') }}",
-        icon: "error",
-        button: false,
-        timer: 2000
-    });
-</script>
-@endpush
-@endif
-
 
 <div class="py-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
             <li class="breadcrumb-item"><a href="#"><span class="fas fa-home"></span></a></li>
-            <li class="breadcrumb-item"><a href="#">Anggota</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Tambah Anggota</li>
+            <li class="breadcrumb-item"><a href="#">Kelompok</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tambah Kelompok</li>
         </ol>
     </nav>
 
@@ -47,7 +19,7 @@
     <div class="col-12 mb-4">
         <div class="card border-light shadow-sm components-section">
             <div class="card-body">
-                <form action="{{ route('anggota.store') }}" method="post">
+                <form action="{{ route('kelompok.store') }}" method="post">
                     @csrf
                     <div class="row mb-4">
                         <div class="col-lg-5 col-sm-6">
@@ -61,12 +33,12 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="nama_anggota">Nama Anggota</label>
+                                <label for="nama_kelompok">Nama Kelompok</label>
                                 <input type="text"
-                                    class="form-control {{ $errors->first('nama_anggota') ? 'is-invalid' : '' }}"
-                                    id="nama_anggota" name="nama_anggota" value="{{ old('nama_anggota')  }}">
+                                    class="form-control {{ $errors->first('nama_kelompok') ? 'is-invalid' : '' }}"
+                                    id="nama_kelompok" name="nama_kelompok" value="{{ old('nama_kelompok')  }}">
                                 <div class="invalid-feedback">
-                                    {{$errors->first('nama_anggota')}}
+                                    {{$errors->first('nama_kelompok')}}
                                 </div>
                             </div>
                             <div class="my-3">
@@ -80,18 +52,6 @@
                             </div>
                         </div>
                         <div class="col-lg-5 col-sm-6">
-                            <div class="mb-3">
-                                <label for="kota">Kota</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><span class="fas fa-building"></span></span>
-                                    <input type="text"
-                                        class="form-control {{ $errors->first('kota') ? 'is-invalid' : '' }}" id="kota"
-                                        name="kota" value="{{ old('kota') }}">
-                                    <div class="invalid-feedback">
-                                        {{$errors->first('kota')}}
-                                    </div>
-                                </div>
-                            </div>
                             <div class="mb-3">
                                 <label for="telepon">Telepon</label>
                                 <div class="input-group">

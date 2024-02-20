@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Ketua;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Pinjaman;
-use App\Anggota;
+use App\kelompok;
 use App\Count;
 use Yajra\DataTables\Facades\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
@@ -18,7 +18,7 @@ class PinjamanController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $query = Pinjaman::query()->with(['anggota']);
+            $query = Pinjaman::query()->with(['kelompok']);
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
@@ -44,8 +44,8 @@ class PinjamanController extends Controller
                 ->editColumn('created_at', function ($item) {
                     return $item->created_at->format('d F Y');
                 })
-                ->addColumn('anggota', function ($item) {
-                    return $item->anggota->nama_anggota;
+                ->addColumn('kelompok', function ($item) {
+                    return $item->kelompok->nama_kelompok;
                 })
                 ->editColumn('nominal', function ($item) {
                     return "Rp." . number_format($item->nominal, 0, ',', '.');
@@ -86,12 +86,12 @@ class PinjamanController extends Controller
     public function show($id)
     {
         $pinjaman = Pinjaman::findOrFail($id);
-        $anggota = Anggota::findOrFail($pinjaman->anggota->id);
-        $total = Count::with('anggota', 'jenis_simpanan')->where('anggota_id', $anggota->id)->first();
+        $kelompok = Kelompok::findOrFail($pinjaman->kelompok->id);
+        $total = Count::with('kelompok', 'jenis_simpanan')->where('kelompok_id', $kelompok->id)->first();
 
         $data = [
             'pinjaman'  => $pinjaman,
-            'anggota' => $anggota,
+            'kelompok' => $kelompok,
             'count' => $total
         ];
 

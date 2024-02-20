@@ -26,10 +26,6 @@
                         </div>
                     </a>
                     <div class="dropdown-menu dashboard-dropdown dropdown-menu-right mt-2">
-                        <a class="dropdown-item font-weight-bold" href="{{ route('admin.profile') }}"><span
-                                class="far fa-user-circle"></span>My Profile</a>
-                        <a class="dropdown-item font-weight-bold" href="{{ route('admin.pengaturan') }}"><span
-                                class="fas fa-cog"></span>Settings</a>
                         <div role="separator" class="dropdown-divider"></div>
                         <a class="dropdown-item font-weight-bold" href="{{ route('logout') }}" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">

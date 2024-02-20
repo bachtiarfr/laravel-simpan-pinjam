@@ -10,8 +10,8 @@ class JenisKelompok extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'name'];
 
-    public function anggota()
+    public function kelompok()
     {
-        return $this->hasMany(Anggota::class, 'jenis_kelompok_id', 'id');
+        return $this->hasMany(Kelompok::class, 'jenis_kelompok_id', 'id');
     }
 }

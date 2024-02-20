@@ -16,8 +16,8 @@ class CreatePinjamanTable extends Migration
         Schema::create('pinjaman', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('anggota_id');
-            $table->foreign('anggota_id')->references('id')->on('anggota')->onDelete('cascade');
+            $table->foreignId('id_kelompok');
+            $table->foreign('id_kelompok')->references('id')->on('kelompok')->onDelete('cascade');
 
             $table->integer('nominal');
             $table->float('bagi_hasil');

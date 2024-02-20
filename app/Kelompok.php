@@ -5,16 +5,16 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Anggota extends Model
+class Kelompok extends Model
 {
-    protected $table = 'anggota';
+    protected $table = 'kelompok';
     protected $primaryKey = 'id';
 
-    protected $fillable = ['no_ktp', 'nama_anggota', 'alamat', 'kota', 'telepon'];
+    protected $fillable = ['no_ktp', 'nama_kelompok', 'alamat', 'telepon'];
     use SoftDeletes;
 
     public function pinjaman()
     {
-        return $this->hasMany(Pinjaman::class, 'anggota_id', 'id');
+        return $this->hasMany(Pinjaman::class, 'id_kelompok', 'id');
     }
 }

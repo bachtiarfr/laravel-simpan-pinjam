@@ -19,6 +19,20 @@
 @endpush
 @endif
 
+@if(session('error'))
+@push('scripts')
+<script>
+    swal({
+        title: "Sorry",
+        text: "{{ session('error') }}",
+        icon: "error",
+        button: false,
+        timer: 3000
+    });
+</script>
+@endpush
+@endif
+
 <div class="row">
     <div class="col-12 mb-4">
 
@@ -49,7 +63,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal</th>
-                                <th>Nama Anggota</th>
+                                <th>Nama Kelompok</th>
                                 <th>Nominal</th>
                                 <th>Jangka Waktu</th>
                                 <th>Bagi Hasil</th>
@@ -82,7 +96,8 @@
         ajax: {
             url: '{!! url()->current() !!}',
         },
-        columns: [{
+        columns: [
+            {
                 "data": 'id',
                 "sortable": false,
                 render: function (data, type, row, meta) {
@@ -94,8 +109,8 @@
                 name: 'created_at'
             },
             {
-                data: 'anggota',
-                name: 'anggota.nama_anggota'
+                data: 'kelompok',
+                name: 'kelompok.nama_kelompok'
             },
             {
                 data: 'nominal',

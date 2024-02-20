@@ -1,14 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Controller;
 use App\Pinjaman;
-use App\Anggota;
+use App\Kelompok;
 use App\Pengaturan;
 use App\BayarPinjaman;
 use \Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Count;
 use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PinjamanExports;
+use PDF;
 
 class PinjamanController extends Controller
 {
@@ -16,7 +21,7 @@ class PinjamanController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $query = Pinjaman::query()->with(['anggota']);
+            $query = Pinjaman::query()->select('pinjaman.created_at', 'kelompok.nama_kelompok', 'nominal', 'jangka_waktu', 'bagi_hasil', 'status', 'pinjaman.id')->join('kelompok', 'pinjaman.id_kelompok', '=', 'kelompok.id');
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
@@ -43,8 +48,8 @@ class PinjamanController extends Controller
                 ->editColumn('created_at', function ($item) {
                     return $item->created_at->format('d F Y');
                 })
-                ->addColumn('anggota', function ($item) {
-                    return $item->anggota->nama_anggota;
+                ->addColumn('kelompok', function ($item) {
+                    return $item->nama_kelompok;
                 })
                 ->editColumn('nominal', function ($item) {
                     return "Rp." . number_format($item->nominal, 0, ',', '.');
@@ -68,22 +73,27 @@ class PinjamanController extends Controller
                 ->make();
         }
 
-        return view('member.pinjaman.pinjaman_index');
+        return view('pinjaman.pinjaman_index');
     }
 
 
     public function create()
     {
-        $data_anggota = Anggota::all();
+        $data_kelompok = Kelompok::all();
         $data_pengaturan = Pengaturan::all()->take(1)->first();
-        return view('member.pinjaman.pinjaman_create', compact('data_anggota', 'data_pengaturan'));
+
+        if ($data_pengaturan == null) {
+            return redirect()->route('pinjaman.index')->with(['error' => 'Anda harus mengatur pinjaman terlebih dahulu di pengaturan dashboard ketua']);
+        }
+
+        return view('pinjaman.pinjaman_create', compact('data_kelompok', 'data_pengaturan'));
     }
 
 
     public function store(Request $request)
     {
         $request->validate([
-            'anggota_id' => 'required|exists:anggota,id',
+            'id_kelompok' => 'required|exists:kelompok,id',
             'jangka_waktu' => 'required|integer|between:1,12',
             'nominal' => 'required|numeric',
             'keterangan' => 'max:200',
@@ -99,20 +109,18 @@ class PinjamanController extends Controller
         $perbulan = $pokok + $hasil_bagi;
         $total = $perbulan * $waktu;
 
-        $cek_pinjaman_user = Pinjaman::where('anggota_id', $request->anggota_id)
+        $cek_pinjaman_user = Pinjaman::where('id_kelompok', $request->kelompok_id)
             ->where(function ($q) {
                 $q->where('status', 'pending')
                     ->orWhere('status', 'belum_lunas');
             })
             ->exists();
 
-
-
         if ($cek_pinjaman_user) {
-            return redirect()->route('pinjaman.create')->with(['error' => 'Anggota masih memiliki tanggungan pinjaman.']);
+            return redirect()->route('pinjaman.create')->with(['error' => 'Kelompok ini masih memiliki tanggungan pinjaman.']);
         } else {
             $pinjaman = Pinjaman::create([
-                'anggota_id' =>  $request->anggota_id,
+                'id_kelompok' =>  $request->id_kelompok,
                 'nominal' => $nominal,
                 'bagi_hasil' => $cek_jasa->jasa_pinjam,
                 'jangka_waktu' => $request->jangka_waktu,
@@ -127,7 +135,7 @@ class PinjamanController extends Controller
             for ($bulan = 1; $bulan <= $waktu; $bulan++) {
                 $date = Carbon::now('Asia/Jakarta');
                 $date->modify('+' . $bulan . ' month');
-                $bayar_pinjaman = BayarPinjaman::create([
+                BayarPinjaman::create([
                     'pinjaman_id' => $pinjaman->id,
                     'jatuh_tempo' => $date->format('Y-m-d'),
                     'tanggal_bayar' => null,
@@ -137,7 +145,7 @@ class PinjamanController extends Controller
                 ]);
             }
 
-            return redirect()->route('pinjaman.create')->with(['success' => 'Pinjaman berhasil ditambahkan.']);
+            return redirect()->route('pinjaman.index')->with(['success' => 'Pinjaman berhasil ditambahkan.']);
         }
     }
 
@@ -149,22 +157,22 @@ class PinjamanController extends Controller
 
     public function edit(Pinjaman $pinjaman)
     {
-        $data_anggota = Anggota::all();
+        $data_kelompok = Kelompok::all();
         $data_pengaturan = Pengaturan::first();
-        $data_pinjaman = Pinjaman::with(['anggota'])->find($pinjaman->id);
+        $data_pinjaman = Pinjaman::with(['kelompok'])->find($pinjaman->id);
 
-        return view('member.pinjaman.pinjaman_edit', compact('data_anggota', 'data_pengaturan', 'data_pinjaman'));
+        return view('pinjaman.pinjaman_edit', compact('data_kelompok', 'data_pengaturan', 'data_pinjaman'));
     }
 
 
     public function update(Request $request, Pinjaman $pinjaman)
     {
         $request->validate([
-            'anggota_id' => 'required|exists:anggota,id',
+            'id_kelompok' => 'required|exists:kelompok,id',
             'keterangan' => 'max:200',
         ]);
         Pinjaman::where('id', $pinjaman->id)->update([
-            'anggota_id' => $request->anggota_id,
+            'id_kelompok' => $request->id_kelompok,
             'keterangan' => $request->keterangan,
         ]);
 
@@ -201,7 +209,7 @@ class PinjamanController extends Controller
 
         $total_bayar = $data_pinjaman->bayar_perbulan * $count_sudah_bayar;
 
-        return view('member.pinjaman.pinjaman_bayar', compact('data_pinjaman', 'detail_pinjaman', 'total_bayar', 'count_sudah_bayar'));
+        return view('pinjaman.pinjaman_bayar', compact('data_pinjaman', 'detail_pinjaman', 'total_bayar', 'count_sudah_bayar'));
     }
 
     public function bayar_pinjaman_detail($id, $bayarpinjamid)
@@ -221,7 +229,7 @@ class PinjamanController extends Controller
             $denda = 0;
         }
 
-        return view('member.pinjaman.pinjaman_bayar_detail', compact('data_pinjaman', 'detail_pinjaman', 'telat_hari', 'denda'));
+        return view('pinjaman.pinjaman_bayar_detail', compact('data_pinjaman', 'detail_pinjaman', 'telat_hari', 'denda'));
     }
 
     public function bayar_pinjaman_post(Request $request, $id, $bayarpinjamid)
@@ -246,5 +254,18 @@ class PinjamanController extends Controller
         }
 
         return redirect()->route('pinjaman.bayar', ['id' => $id])->with(['success' => 'Pembayaran berhasil.']);
+    }
+        public function cetak_excel()
+    {
+        $tgl = now();
+        return Excel::download(new PinjamanExports, 'Laporan-Pinjaman-' . $tgl . '.xlsx');
+    }
+
+    public function cetak_pdf()
+    {
+        $tgl = now();
+        $pinjaman = Pinjaman::latest()->get();
+        $pdf = PDF::loadview('ketua.report.pinjaman_pdf', ['pinjaman' => $pinjaman]);
+        return $pdf->download('laporan-pinjaman-' . $tgl . '.pdf');
     }
 }

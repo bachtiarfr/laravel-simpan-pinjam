@@ -28,8 +28,8 @@
                         </div>
                         <div class="col-12 col-xl-7 px-xl-0">
                             <div class="d-none d-sm-block">
-                                <h2 class="h5">Data Anggota</h2>
-                                <h3 class="mb-1">{{ $anggota }}</h3>
+                                <h2 class="h5">Data Kelompok</h2>
+                                <h3 class="mb-1">{{ $kelompok }}</h3>
                             </div>
                             {{-- <small>Feb 1 - Apr 1, <span class="icon icon-small"><span
                                         class="fas fa-globe-europe"></span></span> WorldWide</small>

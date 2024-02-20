@@ -43,29 +43,29 @@
                         <form action="{{ route('pinjaman.store') }}" method="post">
                             @csrf
                             <div class="mb-3">
-                                <label for="anggota_id">ID Anggota</label>
+                                <label for="id_kelompok">ID Kelompok</label>
                                 {{-- <input type="text"
-                                    class="form-control {{ $errors->first('anggota_id') ? 'is-invalid' : '' }}"
-                                    id="anggota_id" name="anggota_id"> --}}
-                                <select class="form-select {{ $errors->first('anggota_id') ? 'is-invalid' : '' }}"
-                                    name="anggota_id" id="anggota_id">
+                                    class="form-control {{ $errors->first('id_kelompok') ? 'is-invalid' : '' }}"
+                                    id="id_kelompok" name="id_kelompok"> --}}
+                                <select class="form-select {{ $errors->first('id_kelompok') ? 'is-invalid' : '' }}"
+                                    name="id_kelompok" id="id_kelompok">
                                     <option value=""></option>
-                                    @foreach ($data_anggota as $anggota)
-                                    <option value="{{ $anggota->id }}">{{ $anggota->nama_anggota }} - {{
-                                        $anggota->no_ktp }}</option>
+                                    @foreach ($data_kelompok as $kelompok)
+                                    <option value="{{ $kelompok->id }}">{{ $kelompok->nama_kelompok }} - {{
+                                        $kelompok->no_ktp }}</option>
                                     @endforeach
                                 </select>
                                 <div class="invalid-feedback">
-                                    {{$errors->first('anggota_id')}}
+                                    {{$errors->first('id_kelompok')}}
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="nama_anggota">Nama Anggota</label>
+                                <label for="nama_kelompok">Nama Kelompok</label>
                                 <input type="text"
-                                    class="form-control {{ $errors->first('nama_anggota') ? 'is-invalid' : '' }}"
-                                    id="nama_anggota" name="nama_anggota">
+                                    class="form-control {{ $errors->first('nama_kelompok') ? 'is-invalid' : '' }}"
+                                    id="nama_kelompok" name="nama_kelompok">
                                 <div class="invalid-feedback">
-                                    {{$errors->first('nama_anggota')}}
+                                    {{$errors->first('nama_kelompok')}}
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -132,9 +132,9 @@
 
 @push('scripts')
 <script>
-    document.getElementById("anggota_id").addEventListener("change", function(e) {
-            let get_anggota = this.options[this.selectedIndex].text.slice(0, -6); 
-            document.getElementById("nama_anggota").value = get_anggota;
+    document.getElementById("id_kelompok").addEventListener("change", function(e) {
+            let get_kelompok = this.options[this.selectedIndex].text.slice(0, -6); 
+            document.getElementById("nama_kelompok").value = get_kelompok;
         });
 
         // On keyUp input jumlah        
