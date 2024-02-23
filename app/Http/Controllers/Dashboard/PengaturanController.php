@@ -50,14 +50,14 @@ class PengaturanController extends Controller
                 ->make();
         }
 
-        return view('ketua.pengaturan.index');
+        return view('pengaturan.index');
     }
 
 
 
     public function create()
     {
-        return view('ketua.pengaturan.create_pengaturan_ketua');
+        return view('pengaturan.create_pengaturan_ketua');
     }
 
 
@@ -83,7 +83,7 @@ class PengaturanController extends Controller
     public function edit($id)
     {
         $simpanan = Pengaturan::findOrFail($id);
-        return view('ketua.pengaturan.show', compact('simpanan'));
+        return view('pengaturan.show', compact('simpanan'));
     }
 
 

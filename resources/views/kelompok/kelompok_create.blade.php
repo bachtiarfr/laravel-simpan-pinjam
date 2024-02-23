@@ -65,6 +65,19 @@
                                 </div>
                             </div>
                             <div class="mb-4">
+                                <label for="user_id">User</label>
+                            {{-- <input type="text" class="form-control {{ $errors->first('anggota_id') ? 'is-invalid' : '' }}" id="anggota_id" name="anggota_id"> --}}
+                                <select class="form-select {{ $errors->first('user_id') ? 'is-invalid' : '' }}" name="user_id" id="user_id">
+                                    <option value=""></option>
+                                    @foreach ($users as $u)
+                                    <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">
+                                    {{$errors->first('user_id')}}
+                                </div>
+                            </div>
+                            <div class="mb-4">
                                 <label for="jenis_kelompok">Jenis Kelompok</label>
                             {{-- <input type="text" class="form-control {{ $errors->first('anggota_id') ? 'is-invalid' : '' }}" id="anggota_id" name="anggota_id"> --}}
                                 <select class="form-select {{ $errors->first('jenis_kelompok_id') ? 'is-invalid' : '' }}" name="jenis_kelompok_id" id="jenis_kelompok_id">

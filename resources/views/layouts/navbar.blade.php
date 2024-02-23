@@ -23,9 +23,24 @@
             </div>
         </div>
         <ul class="nav flex-column">
+            {{-- Sidebar Anggota --}}
+            @can('isAnggota')
+            <li class="nav-item ">
+                <a href="{{ route('dashboard.anggota') }}" class="nav-link">
+                    <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+           <li class="nav-item ">
+                <a href="{{ route('pinjaman.index') }}" class="nav-link">
+                    <span class="sidebar-icon"><span class="fas fa-database"></span></span>
+                    <span>Pinjaman</span>
+                </a>
+            </li>
+
 
             {{-- Sidebar Admin --}}
-            @can('isAdmin')
+            @elsecan('isAdmin')
             <li class="nav-item ">
                 <a href="{{ route('dashboard.admin') }}" class="nav-link">
                     <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
@@ -108,6 +123,30 @@
                         </li>
                         <li class="nav-item {{ (Request::route()->getName() == 'user.create') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('user.create') }}"><span>Tambah User</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                    data-toggle="collapse" data-target="#submenu-app">
+                    <span>
+                        <span class="sidebar-icon"><span class="fas fa-users"></span></span>
+                        Kelompok
+                    </span>
+                    <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
+                </span>
+                <div class="multi-level collapse {{ (Request::route()->getName() == 'kelompok.index') ||
+                                        (Request::route()->getName() == 'kelompok.create') || 
+                                        (Request::route()->getName() == 'kelompok.show')  ? 'show' : '' }}" role="list"
+                    id="submenu-app" aria-expanded="false">
+                    <ul class="flex-column nav">
+                        <li class="nav-item {{ (Request::route()->getName() == 'kelompok.index') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('kelompok.index') }}"><span>Data Kelompok</span></a>
+                        </li>
+                        <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('kelompok.create') }}"><span>Tambah Kelompok</span></a>
                         </li>
                     </ul>
                 </div>

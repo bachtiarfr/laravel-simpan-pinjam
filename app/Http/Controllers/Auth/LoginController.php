@@ -40,6 +40,9 @@ class LoginController extends Controller
             case 'ketua':
                 return 'ketua';
                 break;
+            case 'anggota':
+                return 'anggota';
+                break;    
             default:
                 return '/';
                 break;

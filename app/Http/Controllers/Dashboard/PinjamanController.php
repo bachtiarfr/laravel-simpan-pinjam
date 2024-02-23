@@ -9,7 +9,7 @@ use App\Pengaturan;
 use App\BayarPinjaman;
 use \Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Count;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PinjamanExports;
@@ -20,11 +20,22 @@ class PinjamanController extends Controller
 
     public function index()
     {
-        if (request()->ajax()) {
+
+        if (request()->ajax()) {        
             $query = Pinjaman::query()->select('pinjaman.created_at', 'kelompok.nama_kelompok', 'nominal', 'jangka_waktu', 'bagi_hasil', 'status', 'pinjaman.id')->join('kelompok', 'pinjaman.id_kelompok', '=', 'kelompok.id');
+            if (Auth::user()->roles == 'anggota') {
+                $query = Pinjaman::query()->select('pinjaman.created_at', 'kelompok.nama_kelompok', 'nominal', 'jangka_waktu', 'bagi_hasil', 'status', 'pinjaman.id')->join('kelompok', 'pinjaman.id_kelompok', '=', 'kelompok.id')->where('user_id', '=', Auth::user()->id);
+            }
+            
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
+
+                    if(Auth::user()->roles == 'anggota'){
+                         return
+                        '<a class="" href="' . route('pinjaman.bayar', $item->id) . '">Detail Angsuran</a>';
+                    }
+
                     return
                         '    <div class="btn-group">
                 <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -159,8 +170,8 @@ class PinjamanController extends Controller
     {
         $data_kelompok = Kelompok::all();
         $data_pengaturan = Pengaturan::first();
-        $data_pinjaman = Pinjaman::with(['kelompok'])->find($pinjaman->id);
-
+        $data_pinjaman = Pinjaman::with('kelompok')->find($pinjaman->id);
+        error_log($data_pinjaman);
         return view('pinjaman.pinjaman_edit', compact('data_kelompok', 'data_pengaturan', 'data_pinjaman'));
     }
 

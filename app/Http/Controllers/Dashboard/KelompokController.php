@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Kelompok;
 use App\JenisKelompok;
+use App\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -57,7 +58,8 @@ class KelompokController extends Controller
     public function create()
     {
         $jenis_kelompok = JenisKelompok::all();
-        return view('kelompok.kelompok_create', compact('jenis_kelompok'));
+        $users = User::all()->where('roles', '=', 'anggota');
+        return view('kelompok.kelompok_create', compact('jenis_kelompok', 'users'));
     }
 
     public function store(Request $request)
@@ -67,6 +69,7 @@ class KelompokController extends Controller
             'nama_kelompok' => 'required|string|max:100',
             'alamat' => 'required|max:200',
             'telepon' => 'required|max:12',
+            'user_id' => 'required|numeric',
             'jenis_kelompok_id' => 'required|numeric',
         ]);
 
@@ -77,6 +80,7 @@ class KelompokController extends Controller
         $kelompok->nama_kelompok = $request->nama_kelompok;
         $kelompok->alamat = $request->alamat;
         $kelompok->telepon = $request->telepon;
+        $kelompok->user_id = $request->user_id;
         $kelompok->jenis_kelompok_id = $request->jenis_kelompok_id;
         $kelompok->save();
 

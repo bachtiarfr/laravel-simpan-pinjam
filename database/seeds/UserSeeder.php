@@ -36,5 +36,13 @@ class UserSeeder extends Seeder
             'password' => bcrypt('jomokbangetwir'),
             'roles' => 'ketua'
         ]);
+
+        User::insert([
+            'name' => 'ini anggota wir',
+            'email' => 'anggota_icikiwir@gmail.com',
+            'image' => 'jawir.jpg',
+            'password' => bcrypt('jomokbangetwir'),
+            'roles' => 'anggota'
+        ]);
     }
 }

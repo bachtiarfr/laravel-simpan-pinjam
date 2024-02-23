@@ -33,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
             return $user->roles == 'ketua';
         });
 
+           Gate::define('isAnggota', function ($user) {
+            return $user->roles == 'anggota';
+        });
+
         Blade::directive('currency', function ($expression) {
             return "Rp. <?php echo number_format($expression, 0, ',', '.'); ?>";
         });
