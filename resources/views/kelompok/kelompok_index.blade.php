@@ -57,6 +57,7 @@
                             <th>Nama</th>
                             <th>Telepon</th>
                             <th>Jenis Kelompok</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -104,11 +105,16 @@
                 name: 'jenis_kelompok'
             },
             {
+                data: 'approved',
+                name: 'approved',
+                // render: 'function (){ return "icikiwir" }',
+            },
+            {
                 data: 'action',
                 name: 'action',
                 orderable: false,
                 searchable: false,
-                width: '15%'
+                width: '20%',
             },
         ]
     });

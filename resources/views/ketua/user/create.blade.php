@@ -26,6 +26,7 @@
                     @csrf
                     <div class="row mb-4">
                         <div class="col-lg-5 col-sm-6">
+
                             <div class="mb-3">
                                 <label for="name">Nama Lengkap</label>
                                 <input type="text" class="form-control {{ $errors->first('name') ? 'is-invalid' : '' }}"
@@ -34,6 +35,7 @@
                                     {{$errors->first('name')}}
                                 </div>
                             </div>
+
                             <div class="mb-3">
                                 <label for="email">Email</label>
                                 <input type="email"
@@ -43,6 +45,7 @@
                                     {{$errors->first('email')}}
                                 </div>
                             </div>
+
                             <div class="mb-3">
                                 <label for="image">Image</label>
                                 <input type="file" name="image" id="image">
@@ -50,6 +53,7 @@
                                     {{$errors->first('image')}}
                                 </div>
                             </div>
+
                             <div class="mb-3">
                                 <label for="password">Password</label>
                                 <input type="password"
@@ -59,6 +63,7 @@
                                     {{$errors->first('password')}}
                                 </div>
                             </div>
+
                             <div class="mb-3">
                                 <label for="password">Konfirmasi Password</label>
                                 <input type="password"
@@ -69,6 +74,7 @@
                                     {{$errors->first('konfirmasi_password')}}
                                 </div>
                             </div>
+
                             <div class="mb-3">
                                 <label>Roles</label>
                                 <select name="roles" required class="form-control">
@@ -76,7 +82,7 @@
                                     <option value="ketua">Ketua</option>
                                 </select>
                             </div>
-
+                            
                         </div>
 
 

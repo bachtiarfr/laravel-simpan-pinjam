@@ -45,7 +45,7 @@
                         <li class="breadcrumb-item active" aria-current="page">Data Pinjaman</li>
                     </ol>
                 </nav>
-                <h2 class="h4">Table Pinjaman</h2>
+                {{-- <h2 class="h4">Table Pinjaman</h2> --}}
             </div>
             {{-- <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group">

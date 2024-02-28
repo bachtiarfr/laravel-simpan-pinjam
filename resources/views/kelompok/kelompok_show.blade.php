@@ -58,18 +58,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="telepon">Telepon</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><span class="fas fa-phone"></span></span>
-                                        <input type="text" class="form-control {{ $errors->first('telepon') ? 'is-invalid' : '' }}" name="telepon" value="{{ $kelompok->telepon }}">
-                                        {{-- <div class="invalid-feedback">
+                                    <div>
+                                        <label for="telepon">Telepon</label>
+                                        <input class="form-control {{ $errors->first('telepon') ? 'is-invalid' : '' }}" name="telepon" type="text" value="{{ $kelompok->telepon }}" required>
+                                        <div class="invalid-feedback">
                                             {{$errors->first('telepon')}}
-                                        </div> --}}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             <div class="mt-3">
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
@@ -80,40 +77,14 @@
                     <div class="row">
                         <div class="col-12 mb-4">
                             <div class="card border-light text-center p-0">
-                                <div class="profile-cover rounded-top" style="background-image: url('https://cdn.consumerscu.org/wp-content/uploads/2019/08/checking_account_1566231082.jpeg')"></div>
+                                <div class="profile-cover rounded-top" style="background-image: url('{{ public_path('assets/docs/'. $kelompok['document_administrations']) }}')"></div>
                                 <div class="card-body pb-5">
-                                    <img src="https://ui-avatars.com/api/?name={{ $kelompok['nama_kelompok'] }}&uppercase=false&background=random&color=random&size=128&font-size=0.33" class="user-avatar large-avatar rounded-circle mx-auto mt-n7 mb-4" alt="{{ $kelompok['nama_kelompok'] }}">
-                                    <h4 class="h3">{{ $kelompok['nama_kelompok'] }}</h4>
-                                    <h5 class="font-weight-normal">Koperasi Simpan Pinjam</h5>
-                                    <a class="btn btn-sm btn-primary mr-2" href="#"><span class="fas fa-user-plus mr-1"></span> Connect</a>
-                                    <a class="btn btn-sm btn-secondary" href="#">Send Message</a>
+                                    <h4 class="h3">{{ $kelompok['document_administrations'] }}</h4>
+                                    <a class="btn btn-sm btn-primary mr-2" href="#"><span class="fas fa-download mr-1"></span> Download</a>
                                 </div>
                              </div>
                         </div>
-                        <div class="col-12">
-                            <div class="card card-body bg-white border-light shadow-sm mb-4">
-                                <h2 class="h5 mb-4">Select profile photo</h2>
-                                <div class="d-xl-flex align-items-center">
-                                    <div>
-                                        <!-- Avatar -->
-                                        <div class="user-avatar xl-avatar mb-3">
-                                            <img class="rounded" src="../assets/img/team/profile-picture-3.jpg" alt="change avatar">
-                                        </div>
-                                    </div>
-                                    <div class="file-field">
-                                        <div class="d-flex justify-content-xl-center ml-xl-3">
-                                           <div class="d-flex">
-                                              <span class="icon icon-md"><span class="fas fa-paperclip mr-3"></span></span> <input type="file">
-                                              <div class="d-md-block text-left">
-                                                 <div class="font-weight-normal text-dark mb-1">Choose Image</div>
-                                                 <div class="text-gray small">JPG, GIF or PNG. Max size of 800K</div>
-                                              </div>
-                                           </div>
-                                        </div>
-                                     </div>                                        
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
 

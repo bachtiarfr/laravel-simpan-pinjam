@@ -23,9 +23,11 @@ class CreateKelompokTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->char('no_ktp', 16)->unique();
+            $table->string('document_administrations', 255);
             $table->string('nama_kelompok', 100);
             $table->text('alamat');
             $table->char('telepon', 12);
+            $table->boolean('approved');
             $table->timestamps();
             $table->softDeletes();
         });

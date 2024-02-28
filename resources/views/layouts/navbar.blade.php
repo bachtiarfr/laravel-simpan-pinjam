@@ -10,6 +10,7 @@
                 <div class="d-block">
                     <h2 class="h6">Hi, {{ auth()->user()->name }}</h2>
                     <a href="{{ route('logout') }}" onclick="event.preventDefault();
+        
           document.getElementById('logout-form').submit();" class="btn btn-secondary text-dark btn-xs"><span
                             class="mr-2"><span class="fas fa-sign-out-alt"></span></span>Sign Out</a>
                 </div>
@@ -35,6 +36,13 @@
                 <a href="{{ route('pinjaman.index') }}" class="nav-link">
                     <span class="sidebar-icon"><span class="fas fa-database"></span></span>
                     <span>Pinjaman</span>
+                </a>
+            </li>
+
+            <li class="nav-item ">
+                <a href="{{ route('pengajuan-kelompok.create') }}" class="nav-link">
+                    <span class="sidebar-icon"><span class="fas fa-users"></span></span>
+                    <span>Pengajuan Kelompok</span>
                 </a>
             </li>
 
@@ -64,9 +72,9 @@
                         <li class="nav-item {{ (Request::route()->getName() == 'kelompok.index') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('kelompok.index') }}"><span>Data Kelompok</span></a>
                         </li>
-                        <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
+                        {{-- <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('kelompok.create') }}"><span>Tambah Kelompok</span></a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </li>
@@ -108,7 +116,7 @@
                 <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
                     data-toggle="collapse" data-target="#submenu-app">
                     <span>
-                        <span class="sidebar-icon"><span class="fas fa-users"></span></span>
+                        <span class="sidebar-icon"><span class="fas fa-user"></span></span>
                         User
                     </span>
                     <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
@@ -145,9 +153,9 @@
                         <li class="nav-item {{ (Request::route()->getName() == 'kelompok.index') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('kelompok.index') }}"><span>Data Kelompok</span></a>
                         </li>
-                        <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
+                        {{-- <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('kelompok.create') }}"><span>Tambah Kelompok</span></a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </li>

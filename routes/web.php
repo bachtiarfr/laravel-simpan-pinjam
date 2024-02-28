@@ -25,11 +25,15 @@ Route::prefix('ketua')
     ->middleware('ketua')
     ->group(function () {
         Route::get('/', 'Dashboard\KetuaDashboardController@index')->name('dashboard.ketua');
+        Route::put('bayar-pinjaman/{id}/{bayarpinjamid}', 'Dashboard\PinjamanController@bayar_pinjaman_post')->name('pinjaman.bayar.post');
         Route::resource('user', 'Dashboard\UserController');
+        Route::resource('kelompok', 'Dashboard\KelompokController');
         Route::resource('pengaturan', 'Dashboard\PengaturanController');
         Route::get('pinjaman_pdf', 'Dashboard\PinjamanController@cetak_pdf')->name('pinjaman.pdf');
         Route::get('pinjaman_excel', 'Dashboard\PinjamanController@cetak_excel')->name('pinjaman.excel');
         Route::resource('pinjaman-ketua', 'Dashboard\PinjamanController')->except(['create', 'store', 'edit']);
+        Route::resource('pengajuan-kelompok', 'Dashboard\PengajuanKelompokController');
+        Route::post('approve/kelompok/{kelompok_id}', 'Dashboard\KelompokController@approveKelompok')->name('approve.kelompok');
     });
 
 Route::prefix('anggota')
@@ -37,4 +41,5 @@ Route::prefix('anggota')
     ->group(function () {
         Route::get('/', 'Dashboard\AnggotaDashboardController@index')->name('dashboard.anggota');
         Route::resource('pinjaman', 'Dashboard\PinjamanController');
+        Route::resource('pengajuan-kelompok', 'Dashboard\PengajuanKelompokController');
     });

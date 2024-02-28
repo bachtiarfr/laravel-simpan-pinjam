@@ -15,14 +15,14 @@ class KelompokController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $query = Kelompok::select('kelompok.id', 'kelompok.no_ktp', 'kelompok.nama_kelompok', 'kelompok.alamat', 'kelompok.telepon', 'kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok')->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'kelompok.jenis_kelompok_id');            
+            $query = Kelompok::select('kelompok.id', 'kelompok.no_ktp', 'kelompok.nama_kelompok', 'kelompok.alamat', 'kelompok.telepon', 'kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok', 'kelompok.approved')->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'kelompok.jenis_kelompok_id');            
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
-                    return '
+                    return  $item->approved == true ? '
                         <div class="btn-group">
                             <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle mr-1 mb-1" 
+                                <button class="btn btn-primary dropdown-toggle mr-1 mb-1 btn-sm" 
                                     type="button" id="action' .  $item->id . '"
                                         data-toggle="dropdown" 
                                         aria-haspopup="true"
@@ -41,14 +41,22 @@ class KelompokController extends Controller
                                     </form>
                                 </div>
                             </div>
-                    </div>';
+                    </div>' : '
+                     <form action="' . route('approve.kelompok',$item->id) .'" method="post" enctype="multipart/form-data">
+                                        ' . method_field('post') . csrf_field() . '
+                                        <button type="submit" class="btn btn-success mr-1 mb-1 btn-sm">
+                                            Terima
+                                        </button>
+                    </form>
+                    <form action="' . route('approve.kelompok',$item->id) .'" method="post" enctype="multipart/form-data">
+                                        ' . method_field('post') . csrf_field() . '
+                                        <button type="submit" class="btn btn-warning mr-1 mb-1 btn-sm">
+                                            Lihat dokumen
+                                        </button>
+                    </form>
+                    ';
                 })
-                ->editColumn('pengurus', function ($item) {
-                    return $item->pengurus == 'pengurus'
-                        ? '<span class="text-success">' . $item->pengurus . '</span>'
-                        : '<span class="text-warning">' . $item->pengurus . '</span>';
-                })
-                ->rawColumns(['action', 'pengurus'])
+                ->rawColumns(['action'])
                 ->make();
         }
 
@@ -100,6 +108,8 @@ class KelompokController extends Controller
         return view('kelompok.kelompok_show', compact('kelompok'));
     }
 
+
+
     public function update(Request $request, $k)
     {
         $request->validate([
@@ -116,11 +126,25 @@ class KelompokController extends Controller
         return redirect()->route('kelompok.index')->with(['status' => 'Data Berhasil Diubah']);
     }
 
+    public function approveKelompok(Request $request, $k)
+    {
+        $data = ['approved' => 1];
+        $kelompok = Kelompok::findOrFail($k);
+        $kelompok->update($data);
+
+        return redirect()->route('kelompok.index')->with(['status' => 'Kelompok telah di setujiu']);
+    }
+
     public function destroy($k)
     {
         $kelompok = Kelompok::findOrFail($k);
         $kelompok->forceDelete();
         return redirect()->route('kelompok.index')
             ->with(['status' => 'Data Kelompok Berhasil Dihapus']);
+    }
+
+    public function pengajuan_kelompok()
+    {
+        return view('kelompok.pengajuan_kelompok');
     }
 }

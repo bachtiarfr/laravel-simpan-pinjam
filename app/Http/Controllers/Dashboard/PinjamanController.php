@@ -130,6 +130,13 @@ class PinjamanController extends Controller
         if ($cek_pinjaman_user) {
             return redirect()->route('pinjaman.create')->with(['error' => 'Kelompok ini masih memiliki tanggungan pinjaman.']);
         } else {
+
+            $kelompok = Kelompok::find($request->id_kelompok);
+
+            if ($kelompok->approved == false) {
+                return redirect()->route('pinjaman.create')->with(['error' => 'Kelompok ini belom terverifikasi oleh ketua pengurus.']);
+            }
+
             $pinjaman = Pinjaman::create([
                 'id_kelompok' =>  $request->id_kelompok,
                 'nominal' => $nominal,
