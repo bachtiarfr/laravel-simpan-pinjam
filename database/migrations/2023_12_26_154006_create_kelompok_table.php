@@ -27,7 +27,8 @@ class CreateKelompokTable extends Migration
             $table->string('nama_kelompok', 100);
             $table->text('alamat');
             $table->char('telepon', 12);
-            $table->boolean('approved');
+            $table->enum('approval_status',array('waiting','reject','approved'))->default('waiting');
+            $table->string('approval_reason', 255);
             $table->timestamps();
             $table->softDeletes();
         });

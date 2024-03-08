@@ -105,8 +105,8 @@
                 name: 'jenis_kelompok'
             },
             {
-                data: 'approved',
-                name: 'approved',
+                data: 'approval_status',
+                name: 'approval_status',
                 // render: 'function (){ return "icikiwir" }',
             },
             {

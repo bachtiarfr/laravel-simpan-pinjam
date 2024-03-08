@@ -15,7 +15,9 @@ class PengajuanKelompokController extends Controller
     public function create()
     {
         $jenis_kelompok = JenisKelompok::all();
-        return view('kelompok.pengajuan_kelompok', compact('jenis_kelompok'));
+        $kelompok = Kelompok::select('kelompok.id', 'kelompok.approval_status','kelompok.approval_reason','kelompok.no_ktp', 'kelompok.nama_kelompok', 'kelompok.alamat', 'kelompok.telepon', 'kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok', 'kelompok.approval_status')->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'kelompok.jenis_kelompok_id')->where('user_id','=',Auth::user()->id)->first();
+        //  Kelompok::all()->where('user_id','=',Auth::user()->id)->first();
+        return view('kelompok.pengajuan_kelompok', compact('jenis_kelompok','kelompok'));
     }
 
     public function store(Request $request)
@@ -37,7 +39,8 @@ class PengajuanKelompokController extends Controller
         $kelompok = new Kelompok;
         $kelompok->no_ktp = $request->no_ktp;
         $kelompok->nama_kelompok = $request->nama_kelompok;
-        $kelompok->approved = false;
+        $kelompok->approval_status = 'waiting';
+        $kelompok->approval_reason = '';
         $kelompok->alamat = $request->alamat;
         $kelompok->telepon = $request->telepon;
         $kelompok->user_id = Auth::user()->id;

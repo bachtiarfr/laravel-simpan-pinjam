@@ -4,7 +4,8 @@
 
 @section('content')
 
-
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+    integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 <div class="py-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -24,8 +25,7 @@
                     <div class="col-12 col-xl-8">
                         <div class="card card-body bg-white border-light shadow-sm mb-4">
                             <h2 class="h5 mb-4">Informasi Umum</h2>
-                            <form action="{{ route('kelompok.update', [$kelompok->id]) }}" method="POST">
-                                @method('put')
+                            {{-- <form> --}}
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
@@ -76,27 +76,28 @@
                                     </div>
                                 </div>
                                 <div class="mt-3">
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                    <a class="btn btn-primary btn-lg" href={{route("approve.kelompok", $kelompok->id)}}>
+                                        Sunting
+                                    </a>
+                                    <button class="btn btn-secondary btn-lg" data-toggle="modal"
+                                        data-target="#exampleModal">Tolak</button>
                                 </div>
-                            </form>
+                                {{--
+                            </form> --}}
                         </div>
                     </div>
                     <div class="col-12 col-xl-4">
                         <div class="row">
                             <div class="col-12 mb-4">
                                 <div class="card border-light text-center p-0">
-                                    {{-- <p>{{public_path('assets/docs/'. $kelompok['document_administrations'])}}</p>
-                                    --}}
-                                    {{-- <embed
-                                        src="{{ public_path('assets/docs/'. $kelompok['document_administrations']) }}"
-                                        width="600" height="500" alt="pdf" /> --}}
                                     <div class="profile-cover rounded-top"
                                         style="background-image: url('{{ public_path('assets/docs/'. $kelompok['document_administrations']) }}')">
                                     </div>
                                     <div class="card-body pb-5">
                                         <h4 class="h3">{{ $kelompok['document_administrations'] }}</h4>
-                                        <a class="btn btn-sm btn-primary mr-2" href="#"><span
-                                                class="fas fa-download mr-1"></span> Download</a>
+                                        <a class="btn btn-sm btn-primary mr-2"
+                                            href="{{ asset('/assets/docs/' . $kelompok['document_administrations'])}}"
+                                            target="_blank"> <span class="fas fa-download mr-1"></span> Download</a>
                                     </div>
                                 </div>
                             </div>
@@ -111,4 +112,38 @@
     </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action={{ route("reject.kelompok", $kelompok->id) }} method="post">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Penolakan pengajuan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+
+                        <div class="my-3">
+                            <label for="textarea">Alasan</label>
+                            <textarea class="form-control {{ $errors->first('alamat') ? 'is-invalid' : '' }}"
+                                placeholder="Tulis alasan kenapa pengajuan ditolak..." id="alasan" name="alasan"
+                                rows="4">{{old('alasan')}}</textarea>
+                            <div class="invalid-feedback">
+                                {{$errors->first('alasan')}}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary p-2">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
 @endsection

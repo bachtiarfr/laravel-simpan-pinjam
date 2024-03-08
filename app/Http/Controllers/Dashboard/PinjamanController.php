@@ -133,7 +133,7 @@ class PinjamanController extends Controller
 
             $kelompok = Kelompok::find($request->id_kelompok);
 
-            if ($kelompok->approved == false) {
+            if ($kelompok->approval_status != 'approved') {
                 return redirect()->route('pinjaman.create')->with(['error' => 'Kelompok ini belom terverifikasi oleh ketua pengurus.']);
             }
 
