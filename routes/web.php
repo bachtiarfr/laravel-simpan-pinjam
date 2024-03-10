@@ -25,7 +25,7 @@ Route::prefix('ketua')
     ->middleware('ketua')
     ->group(function () {
         Route::get('/', 'Dashboard\KetuaDashboardController@index')->name('dashboard.ketua');
-        Route::put('bayar-pinjaman/{id}/{bayarpinjamid}', 'Dashboard\PinjamanController@bayar_pinjaman_post')->name('pinjaman.bayar.post');
+        // Route::put('bayar-pinjaman/{id}/{bayarpinjamid}', 'Dashboard\PinjamanController@bayar_pinjaman_post')->name('pinjaman.bayar.post');
         Route::resource('user', 'Dashboard\UserController');
         Route::resource('kelompok', 'Dashboard\KelompokController');
         Route::get('approval/{kelompok_id}', 'Dashboard\KelompokController@approvalByID')->name('kelompok.approval');
@@ -43,5 +43,6 @@ Route::prefix('anggota')
     ->group(function () {
         Route::get('/', 'Dashboard\AnggotaDashboardController@index')->name('dashboard.anggota');
         Route::resource('pinjaman', 'Dashboard\PinjamanController');
+        Route::get('bayar-pinjaman/{id}', 'Dashboard\PinjamanController@bayar_pinjaman')->name('pinjaman.bayar');
         Route::resource('pengajuan-kelompok', 'Dashboard\PengajuanKelompokController');
     });
