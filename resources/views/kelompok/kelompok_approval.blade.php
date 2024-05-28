@@ -76,8 +76,8 @@
                                     </div>
                                 </div>
                                 <div class="mt-3">
-                                    <a class="btn btn-primary btn-lg" href={{route("approve.kelompok", $kelompok->id)}}>
-                                        Sunting
+                                    <a class="btn btn-success btn-lg" href={{route("approve.kelompok", $kelompok->id)}}>
+                                        Setujui
                                     </a>
                                     <button class="btn btn-secondary btn-lg" data-toggle="modal"
                                         data-target="#exampleModal">Tolak</button>
@@ -96,7 +96,7 @@
                                     <div class="card-body pb-5">
                                         <h4 class="h3">{{ $kelompok['document_administrations'] }}</h4>
                                         <a class="btn btn-sm btn-primary mr-2"
-                                            href="{{ asset('/assets/docs/' . $kelompok['document_administrations'])}}"
+                                            href="{{ asset('/docs/' . $kelompok['document_administrations'])}}"
                                             target="_blank"> <span class="fas fa-download mr-1"></span> Download</a>
                                     </div>
                                 </div>

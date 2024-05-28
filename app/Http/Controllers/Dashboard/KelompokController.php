@@ -100,6 +100,9 @@ class KelompokController extends Controller
     public function approvalByID($k)
     {
         $kelompok = Kelompok::Find($k);
+        if ($kelompok->approval_status == "approved") {
+            return redirect()->route('kelompok.index')->with(['status' => 'Pengajuan kelompok telah di setujui']);
+        }
         return view('kelompok.kelompok_approval', compact('kelompok'));
     }
 

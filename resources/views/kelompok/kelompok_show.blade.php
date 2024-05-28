@@ -85,18 +85,14 @@
                         <div class="row">
                             <div class="col-12 mb-4">
                                 <div class="card border-light text-center p-0">
-                                    {{-- <p>{{public_path('assets/docs/'. $kelompok['document_administrations'])}}</p>
-                                    --}}
-                                    {{-- <embed
-                                        src="{{ public_path('assets/docs/'. $kelompok['document_administrations']) }}"
-                                        width="600" height="500" alt="pdf" /> --}}
                                     <div class="profile-cover rounded-top"
                                         style="background-image: url('{{ public_path('assets/docs/'. $kelompok['document_administrations']) }}')">
                                     </div>
                                     <div class="card-body pb-5">
                                         <h4 class="h3">{{ $kelompok['document_administrations'] }}</h4>
-                                        <a class="btn btn-sm btn-primary mr-2" href="#"><span
-                                                class="fas fa-download mr-1"></span> Download</a>
+                                        <a class="btn btn-sm btn-primary mr-2"
+                                            href="{{ asset('/docs/' . $kelompok['document_administrations'])}}"
+                                            target="_blank"> <span class="fas fa-download mr-1"></span> Download</a>
                                     </div>
                                 </div>
                             </div>

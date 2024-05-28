@@ -70,11 +70,8 @@
                     id="submenu-app" aria-expanded="false">
                     <ul class="flex-column nav">
                         <li class="nav-item {{ (Request::route()->getName() == 'kelompok.index') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('kelompok.index') }}"><span>Data Kelompok</span></a>
+                            <a class="nav-link" href="{{ route('kelompok.index') }}"><span>{{ route('kelompok.index') }}</span></a>
                         </li>
-                        {{-- <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('kelompok.create') }}"><span>Tambah Kelompok</span></a>
-                        </li> --}}
                     </ul>
                 </div>
             </li>
