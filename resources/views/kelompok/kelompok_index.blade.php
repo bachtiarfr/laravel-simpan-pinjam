@@ -49,7 +49,8 @@
         <div class="card border-light shadow-sm components-section">
             <div class="card card-body border-light shadow-sm table-wrapper table-responsive pt-0">
                 <br>
-                <table class="table table-hover table-striped" id="crudTable">
+                @can('isKetua')
+                <table class="table table-hover table-striped" id="KetuaShowKelompokData">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -62,10 +63,25 @@
                         </tr>
                     </thead>
                     <tbody>
+                    </tbody>
+                </table>
+                @elsecan('isAdmin')
+                  <table class="table table-hover table-striped" id="AdminShowKelompokData">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>No. kTP</th>
+                            <th>Nama</th>
+                            <th>Telepon</th>
+                            <th>Jenis Kelompok</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
                     </tbody>
                 </table>
-
+                @endcan
             </div>
             <footer class="footer section py-2">
         </div>
@@ -77,7 +93,7 @@
 @push('scripts')
 <script>
     // AJAX DataTable
-    var datatable = $('#crudTable').DataTable({
+    var datatable = $('#KetuaShowKelompokData').DataTable({
         processing: true,
         serverSide: true,
         ordering: true,
@@ -115,6 +131,41 @@
                 orderable: false,
                 searchable: false,
                 width: '20%',
+            },
+        ]
+    });
+
+    var datatable = $('#AdminShowKelompokData').DataTable({
+        processing: true,
+        serverSide: true,
+        ordering: true,
+        ajax: {
+            url: '{!! url()->current() !!}',
+        },
+        columns: [{
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'no_ktp',
+                name: 'no_ktp'
+            },
+            {
+                data: 'nama_kelompok',
+                name: 'nama_kelompok'
+            },
+            {
+                data: 'telepon',
+                name: 'telepon'
+            },
+            {
+                data: 'jenis_kelompok',
+                name: 'jenis_kelompok'
+            },
+            {
+                data: 'approval_status',
+                name: 'approval_status',
+                // render: 'function (){ return "icikiwir" }',
             },
         ]
     });

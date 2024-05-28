@@ -55,7 +55,7 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
+          <li class="nav-item">
                 <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
                     data-toggle="collapse" data-target="#submenu-app">
                     <span>
@@ -64,14 +64,15 @@
                     </span>
                     <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                 </span>
-                <div class="multi-level collapse {{ (Request::route()->getName() == 'kelompok.index') ||
-                                        (Request::route()->getName() == 'kelompok.create') || 
-                                        (Request::route()->getName() == 'kelompok.show')  ? 'show' : '' }}" role="list"
+                <div class="multi-level collapse {{ (Request::route()->getName() == 'admin.kelompok.index') ? 'show' : '' }}" role="list"
                     id="submenu-app" aria-expanded="false">
                     <ul class="flex-column nav">
-                        <li class="nav-item {{ (Request::route()->getName() == 'kelompok.index') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('kelompok.index') }}"><span>{{ route('kelompok.index') }}</span></a>
+                        <li class="nav-item {{ (Request::route()->getName() == 'admin.kelompok.index') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.kelompok.index') }}"><span>Data Kelompok</span></a>
                         </li>
+                        {{-- <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('kelompok.create') }}"><span>Tambah Kelompok</span></a>
+                        </li> --}}
                     </ul>
                 </div>
             </li>
@@ -84,17 +85,14 @@
                     </span>
                     <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                 </span>
-                <div class="multi-level collapse {{ (Request::route()->getName() == 'pinjaman.index') ||
-                                          (Request::route()->getName() == 'pinjaman.create') || 
-
-                                          (Request::route()->getName() == 'pinjaman.show')  ? 'show' : '' }}"
+                <div class="multi-level collapse {{ (Request::route()->getName() == 'admin.show.pinjaman') || (Request::route()->getName() == 'admin.create.pinjaman') ? 'show' : '' }}"
                     role="list" id="pinjaman-app" aria-expanded="false">
                     <ul class="flex-column nav">
-                        <li class="nav-item {{ (Request::route()->getName() == 'pinjaman.index') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('pinjaman.index') }}"><span>Data Pinjaman</span></a>
+                        <li class="nav-item {{ (Request::route()->getName() == 'admin.show.pinjaman') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.show.pinjaman') }}"><span>Data Pinjaman</span></a>
                         </li>
-                        <li class="nav-item {{ (Request::route()->getName() == 'pinjaman.create') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('pinjaman.create') }}"><span>Tambah Pinjaman</span></a>
+                        <li class="nav-item {{ (Request::route()->getName() == 'admin.create.pinjaman') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.create.pinjaman') }}"><span>Tambah Pinjaman</span></a>
                         </li>
                     </ul>
                 </div>
