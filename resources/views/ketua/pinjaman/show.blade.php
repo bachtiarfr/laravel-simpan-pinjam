@@ -4,18 +4,6 @@
 
 @section('content')
 
-<div class="py-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-            <li class="breadcrumb-item"><a href="#"><span class="fas fa-home"></span></a></li>
-            <li class="breadcrumb-item"><a href="#">Pinjaman</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Detail Pinjaman</li>
-        </ol>
-    </nav>
-
-</div>
-
-
 @if (session('status'))
 @push('scripts')
 <script>
@@ -89,7 +77,7 @@
                     </tr>
                 </table>
                 <div class="float-right">
-                    <form action="{{ route('pinjaman-ketua.update', $pinjaman->id) }}" method="POST">
+                    <form action="{{ route('pinjaman-direkturupdate', $pinjaman->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         @if ($pinjaman->status != 'lunas')

@@ -18,6 +18,6 @@ class DashboardController extends Controller
             'user'     => User::all()->count(),
         ];
 
-        return view('ketua.dashboard.index', $data);
+        return view('direktur.dashboard.index', $data);
     }
 }

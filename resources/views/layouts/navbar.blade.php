@@ -4,15 +4,17 @@
             class="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
             <div class="d-flex align-items-center">
                 <div class="user-avatar lg-avatar mr-4">
-                    <img src="{{ Storage::url('public/'. auth()->user()->image) }}"
+                    <img src="{{ Storage::url('public/' . auth()->user()->image) }}"
                         class="card-img-top rounded-circle border-white" alt="Bonnie Green">
                 </div>
                 <div class="d-block">
                     <h2 class="h6">Hi, {{ auth()->user()->name }}</h2>
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                    <a href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
         
-          document.getElementById('logout-form').submit();" class="btn btn-secondary text-dark btn-xs"><span
-                            class="mr-2"><span class="fas fa-sign-out-alt"></span></span>Sign Out</a>
+          document.getElementById('logout-form').submit();"
+                        class="btn btn-secondary text-dark btn-xs"><span class="mr-2"><span
+                                class="fas fa-sign-out-alt"></span></span>Sign Out</a>
                 </div>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
@@ -26,170 +28,140 @@
         <ul class="nav flex-column">
             {{-- Sidebar Anggota --}}
             @can('isAnggota')
-            <li class="nav-item ">
-                <a href="{{ route('dashboard.anggota') }}" class="nav-link">
-                    <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-           <li class="nav-item ">
-                <a href="{{ route('pinjaman.index') }}" class="nav-link">
-                    <span class="sidebar-icon"><span class="fas fa-database"></span></span>
-                    <span>Pinjaman</span>
-                </a>
-            </li>
+                <li class="nav-item ">
+                    <a href="{{ route('dashboard.anggota') }}" class="nav-link">
+                        <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="{{ route('pinjaman.index') }}" class="nav-link">
+                        <span class="sidebar-icon"><span class="fas fa-database"></span></span>
+                        <span>Pinjaman</span>
+                    </a>
+                </li>
 
-            <li class="nav-item ">
-                <a href="{{ route('pengajuan-kelompok.create') }}" class="nav-link">
-                    <span class="sidebar-icon"><span class="fas fa-users"></span></span>
-                    <span>Pengajuan Kelompok</span>
-                </a>
-            </li>
+                <li class="nav-item ">
+                    <a href="{{ route('pengajuan-kelompok.create') }}" class="nav-link">
+                        <span class="sidebar-icon"><span class="fas fa-users"></span></span>
+                        <span>Pengajuan Kelompok</span>
+                    </a>
+                </li>
 
 
-            {{-- Sidebar Admin --}}
+                {{-- Sidebar Admin --}}
             @elsecan('isAdmin')
-            <li class="nav-item ">
-                <a href="{{ route('dashboard.admin') }}" class="nav-link">
-                    <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-          <li class="nav-item">
-                <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
-                    data-toggle="collapse" data-target="#submenu-app">
-                    <span>
-                        <span class="sidebar-icon"><span class="fas fa-users"></span></span>
-                        Kelompok
+                <li class="nav-item ">
+                    <a href="{{ route('dashboard.admin') }}" class="nav-link">
+                        <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                        data-toggle="collapse" data-target="#submenu-app">
+                        <span>
+                            <span class="sidebar-icon"><span class="fas fa-users"></span></span>
+                            Kelompok
+                        </span>
+                        <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                     </span>
-                    <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
-                </span>
-                <div class="multi-level collapse {{ (Request::route()->getName() == 'admin.kelompok.index') ? 'show' : '' }}" role="list"
-                    id="submenu-app" aria-expanded="false">
-                    <ul class="flex-column nav">
-                        <li class="nav-item {{ (Request::route()->getName() == 'admin.kelompok.index') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('admin.kelompok.index') }}"><span>Data Kelompok</span></a>
-                        </li>
-                        {{-- <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
+                    <div class="multi-level collapse {{ Request::route()->getName() == 'admin.kelompok.index' ? 'show' : '' }}"
+                        role="list" id="submenu-app" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li
+                                class="nav-item {{ Request::route()->getName() == 'admin.kelompok.index' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.kelompok.index') }}"><span>Data
+                                        Kelompok</span></a>
+                            </li>
+                            {{-- <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('kelompok.create') }}"><span>Tambah Kelompok</span></a>
                         </li> --}}
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
-                <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
-                    data-toggle="collapse" data-target="#pinjaman-app">
-                    <span>
-                        <span class="sidebar-icon"><span class="fas fa-table"></span></span>
-                        Pinjaman
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                        data-toggle="collapse" data-target="#pinjaman-app">
+                        <span>
+                            <span class="sidebar-icon"><span class="fas fa-table"></span></span>
+                            Pinjaman
+                        </span>
+                        <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                     </span>
-                    <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
-                </span>
-                <div class="multi-level collapse {{ (Request::route()->getName() == 'admin.show.pinjaman') || (Request::route()->getName() == 'admin.create.pinjaman') ? 'show' : '' }}"
-                    role="list" id="pinjaman-app" aria-expanded="false">
-                    <ul class="flex-column nav">
-                        <li class="nav-item {{ (Request::route()->getName() == 'admin.show.pinjaman') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('admin.show.pinjaman') }}"><span>Data Pinjaman</span></a>
-                        </li>
-                        <li class="nav-item {{ (Request::route()->getName() == 'admin.create.pinjaman') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('admin.create.pinjaman') }}"><span>Tambah Pinjaman</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                    <div class="multi-level collapse {{ Request::route()->getName() == 'admin.show.pinjaman' || Request::route()->getName() == 'admin.create.pinjaman' ? 'show' : '' }}"
+                        role="list" id="pinjaman-app" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li
+                                class="nav-item {{ Request::route()->getName() == 'admin.show.pinjaman' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.show.pinjaman') }}"><span>Data
+                                        Pinjaman</span></a>
+                            </li>
+                            <li
+                                class="nav-item {{ Request::route()->getName() == 'admin.create.pinjaman' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.create.pinjaman') }}"><span>Tambah
+                                        Pinjaman</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
-            {{-- Sidebar Ketua --}}
+                {{-- Sidebar Ketua --}}
             @elsecan('isKetua')
-            <li class="nav-item {{ (request()->is('ketua') ? 'active' : '') }}">
-                <a href="{{ route('dashboard.ketua') }}" class="nav-link">
-                    <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
-                    <span>Dashboard</span>
-                </a>
-            </li>
+                <li class="nav-item {{ request()->is('ketua') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.direktur') }}" class="nav-link">
+                        <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
 
-            <li class="nav-item {{ (request()->is('ketua/user*') ? 'active' : '') }}">
-                <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
-                    data-toggle="collapse" data-target="#submenu-app">
-                    <span>
-                        <span class="sidebar-icon"><span class="fas fa-user"></span></span>
-                        User
+                <li class="nav-item {{ request()->is('ketua/user*') ? 'active' : '' }}">
+                    <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                        data-toggle="collapse" data-target="#submenu-app">
+                        <span>
+                            <span class="sidebar-icon"><span class="fas fa-user"></span></span>
+                            User
+                        </span>
+                        <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                     </span>
-                    <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
-                </span>
-                <div class="multi-level collapse {{ (Request::route()->getName() == 'user.index') ||
-                                        (Request::route()->getName() == 'user.create') || 
-                                        (Request::route()->getName() == 'user.show')  ? 'show' : '' }}" role="list"
-                    id="submenu-app" aria-expanded="false">
-                    <ul class="flex-column nav">
-                        <li class="nav-item {{ (Request::route()->getName() == 'user.index') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('user.index') }}"><span>Data User</span></a>
-                        </li>
-                        <li class="nav-item {{ (Request::route()->getName() == 'user.create') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('user.create') }}"><span>Tambah User</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                    <div class="multi-level collapse {{ Request::route()->getName() == 'user.index' ||
+                    Request::route()->getName() == 'user.create' ||
+                    Request::route()->getName() == 'user.show'
+                        ? 'show'
+                        : '' }}"
+                        role="list" id="submenu-app" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item {{ Request::route()->getName() == 'user.index' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('user.index') }}"><span>Data User</span></a>
+                            </li>
+                            <li class="nav-item {{ Request::route()->getName() == 'user.create' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('user.create') }}"><span>Tambah User</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
-            <li class="nav-item">
-                <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
-                    data-toggle="collapse" data-target="#submenu-app">
-                    <span>
+                <li class="nav-item {{ request()->is('ketua/kelompok*') ? 'active' : '' }}">
+                    <a href="{{ route('kelompok.index') }}" class="nav-link">
                         <span class="sidebar-icon"><span class="fas fa-users"></span></span>
-                        Kelompok
-                    </span>
-                    <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
-                </span>
-                <div class="multi-level collapse {{ (Request::route()->getName() == 'kelompok.index') ||
-                                        (Request::route()->getName() == 'kelompok.create') || 
-                                        (Request::route()->getName() == 'kelompok.show')  ? 'show' : '' }}" role="list"
-                    id="submenu-app" aria-expanded="false">
-                    <ul class="flex-column nav">
-                        <li class="nav-item {{ (Request::route()->getName() == 'kelompok.index') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('kelompok.index') }}"><span>Data Kelompok</span></a>
-                        </li>
-                        {{-- <li class="nav-item {{ (Request::route()->getName() == 'kelompok.create') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('kelompok.create') }}"><span>Tambah Kelompok</span></a>
-                        </li> --}}
-                    </ul>
-                </div>
-            </li>
+                        <span>Kelompok</span>
+                    </a>
+                </li>
 
-            <li class="nav-item {{ request()->is('ketua/pinjaman-ketua*') ? 'active' : '' }}">
-                <a href="{{ route('pinjaman-ketua.index') }}" class="nav-link">
-                    <span class="sidebar-icon"><span class="fas fa-database"></span></span>
-                    <span>Data Pinjaman</span>
-                </a>
-            </li>
-            
-            <li class="nav-item">
-                <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
-                    data-toggle="collapse" data-target="#submenu-pengaturan">
-                    <span>
-                        <span class="sidebar-icon"><span class="fas fa-cog"></span></span>
-                        Pengaturan
-                    </span>
-                    <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
-                </span>
-                <div class="multi-level collapse {{ (Request::route()->getName() == 'pengaturan.index') ||
-                                        (Request::route()->getName() == 'pengaturan.create') || 
-                                        (Request::route()->getName() == 'pengaturan.show')  ? 'show' : '' }}" role="list"
-                    id="submenu-pengaturan" aria-expanded="false">
-                    <ul class="flex-column nav">
-                        <li class="nav-item {{ (Request::route()->getName() == 'pengaturan.index') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('pengaturan.index') }}"><span>Data Pengaturan</span></a>
-                        </li>
-                        <li class="nav-item {{ (Request::route()->getName() == 'pengaturan.create') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('pengaturan.create') }}"><span>Tambah Pengaturan</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                <li class="nav-item {{ request()->is('ketua/pinjaman-ketua*') ? 'active' : '' }}">
+                    <a href="{{ route('pinjaman-direktur.index') }}" class="nav-link">
+                        <span class="sidebar-icon"><span class="fas fa-database"></span></span>
+                        <span>Pinjaman</span>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ request()->is('ketua/pengaturan*') ? 'active' : '' }}">
+                    <a href="{{ route('pengaturan.show') }}" class="nav-link">
+                        <span class="sidebar-icon"><span class="fa-solid fa-gear"></span></span>
+                        <span>Pengaturan</span>
+                    </a>
+                </li>
             @endcan
-
-
-
-
         </ul>
     </div>
 </nav>

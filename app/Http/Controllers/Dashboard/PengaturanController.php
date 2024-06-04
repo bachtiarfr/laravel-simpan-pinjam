@@ -55,13 +55,14 @@ class PengaturanController extends Controller
 
 
 
-    public function create()
+    public function show()
     {
-        return view('pengaturan.create_pengaturan_ketua');
+        $pengaturan = Pengaturan::select('*')->first();
+        return view('pengaturan.index', compact('pengaturan'));
     }
 
 
-    public function store(Request $request)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'waktu_pinjaman' => 'required|numeric',
@@ -69,42 +70,15 @@ class PengaturanController extends Controller
             'jasa_pinjam' => 'required|numeric'
         ]);
 
-        Pengaturan::create($request->all());
-        return redirect()->route('pengaturan.index')
-            ->with(['status' => 'Data Jenis Pinjaman Berhasil Ditambahkan']);
-    }
-
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        $simpanan = Pengaturan::findOrFail($id);
-        return view('pengaturan.show', compact('simpanan'));
-    }
-
-
-    public function update(Request $request, Pengaturan $pengaturan)
-    {
-        $request->validate([
-            'nama_simpanan' => 'required',
-            'minimal_simpan' => 'required|numeric'
-        ]);
-
         $data = $request->all();
 
-        $pengaturan->update($data);
-        return redirect()->route('jenis-simpanan.index')
-            ->with(['status' => 'Data Jenis Simpanan Berhasil Diupdate']);
-    }
+        Pengaturan::where('id', $id)->update([
+            'waktu_pinjaman' => $request->waktu_pinjaman,
+            'max_pinjaman' => $request->max_pinjaman,
+            'jasa_pinjam' => $request->jasa_pinjam,
+        ]);
 
-
-    public function destroy(Pengaturan $pengaturan)
-    {
-        $pengaturan->delete();
-        return redirect()->back();
+        return redirect()->route('pengaturan.show')
+            ->with(['status' => 'Data Simpanan Berhasil Diupdate']);
     }
 }

@@ -37,15 +37,12 @@ class UserController extends Controller
                     </div>
                 </div>';
                 })
-                ->editColumn('image', function ($item) {
-                    return $item->image ? '<img src="' . Storage::url($item->image) . '" style="max-height: 40px;"/>' : '';
-                })
                 ->editColumn('roles', function ($item) {
                     return $item->roles == 'admin'
                         ? '<span class="text-warning">' . $item->roles . '</span>'
                         : '<span class="text-success">' . $item->roles . '</span>';
                 })
-                ->rawColumns(['action', 'image', 'roles'])
+                ->rawColumns(['action', 'roles'])
                 ->make();
         }
 
@@ -60,17 +57,16 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
             'name'                  => 'required',
             'email'                 => 'required|email|unique:users',
-            'image'                 => 'required|image|mimes:jpg,png,jpeg,bmp',
             'password'              => 'required|min:3',
             'konfirmasi_password'   => 'required|same:password|min:3',
-            'roles'                 => 'nullable|string|in:admin,ketua'
+            'roles'                 => 'nullable|string|in:admin,anggota'
         ]);
 
         $data = $request->all();
-        $data['image'] = $request->file('image')->store('assets/user', 'public');
         $data['password'] = Hash::make($data['password']);
 
         User::create($data);
@@ -96,23 +92,14 @@ class UserController extends Controller
         $request->validate([
             'name'                  => 'required',
             'email'                 => 'required|email|unique:users,email,' . $id,
-            'image'                 => 'nullable|image|mimes:jpg,png,jpeg,bmp',
             'password'              => 'sometimes|nullable|min:3',
             'konfirmasi_password'   => 'sometimes|same:password|nullable|min:3',
-            'roles'                 => 'nullable|string|in:admin,ketua'
+            'roles'                 => 'nullable|string|in:admin,anggota'
         ]);
 
         $data = $request->all();
         $user = User::findOrFail($id);
 
-        if ($request->hasFile('image')) {
-            if ($user->image && file_exists(storage_path('app/public/' . $user->image))) {
-                Storage::delete('public/' . $user->image);
-                $data['image'] =  $request->file('image')->store('assets/user', 'public');
-            } else {
-                $data['image'] =  $request->file('image')->store('assets/user', 'public');
-            }
-        }
 
         if ($request->input('password')) {
             $data['password'] = Hash::make($data['password']);
@@ -127,7 +114,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        Storage::delete('public/' . $user->image);
         $user->delete();
         return redirect()->route('user.index')->with(['status' => 'Data User ' . $user->name . ' Berhasil Dihapus']);
     }

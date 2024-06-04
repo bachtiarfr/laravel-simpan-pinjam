@@ -23,18 +23,19 @@ Route::prefix('admin')
         Route::put('bayar-pinjaman/{id}/{bayarpinjamid}', 'Dashboard\PinjamanController@bayar_pinjaman_post')->name('pinjaman.bayar.post');
     });
 
-Route::prefix('ketua')
-    ->middleware('ketua')
+Route::prefix('direktur')
+    ->middleware('direktur')
     ->group(function () {
-        Route::get('/', 'Dashboard\KetuaDashboardController@index')->name('dashboard.ketua');
+        Route::get('/', 'Dashboard\KetuaDashboardController@index')->name('dashboard.direktur');
         // Route::put('bayar-pinjaman/{id}/{bayarpinjamid}', 'Dashboard\PinjamanController@bayar_pinjaman_post')->name('pinjaman.bayar.post');
         Route::resource('user', 'Dashboard\UserController');
         Route::resource('kelompok', 'Dashboard\KelompokController');
         Route::get('approval/{kelompok_id}', 'Dashboard\KelompokController@approvalByID')->name('kelompok.approval');
-        Route::resource('pengaturan', 'Dashboard\PengaturanController');
+        Route::get('pengaturan', 'Dashboard\PengaturanController@show')->name('pengaturan.show');
+        Route::put('pengaturan/edit/{id}', 'Dashboard\PengaturanController@update')->name('pengaturan.update');
         Route::get('pinjaman_pdf', 'Dashboard\PinjamanController@cetak_pdf')->name('pinjaman.pdf');
         Route::get('pinjaman_excel', 'Dashboard\PinjamanController@cetak_excel')->name('pinjaman.excel');
-        Route::resource('pinjaman-ketua', 'Dashboard\PinjamanController')->except(['create', 'store', 'edit']);
+        Route::resource('pinjaman-direktur', 'Dashboard\PinjamanController')->except(['create', 'store', 'edit']);
         Route::resource('pengajuan-kelompok', 'Dashboard\PengajuanKelompokController');
         Route::get('approve/kelompok/{kelompok_id}', 'Dashboard\KelompokController@approveKelompok')->name('approve.kelompok');
         Route::post('reject/kelompok/{kelompok_id}', 'Dashboard\KelompokController@rejectKelompok')->name('reject.kelompok');

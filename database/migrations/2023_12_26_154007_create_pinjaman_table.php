@@ -44,3 +44,4 @@ class CreatePinjamanTable extends Migration
         Schema::dropIfExists('pinjaman');
     }
 }
+        

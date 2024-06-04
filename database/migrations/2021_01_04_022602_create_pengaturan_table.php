@@ -30,6 +30,6 @@ class CreatePengaturanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pengaturans');
+        Schema::dropIfExists('pengaturan');
     }
 }
