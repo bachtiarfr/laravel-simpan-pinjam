@@ -22,9 +22,9 @@ class PinjamanController extends Controller
     {
 
         if (request()->ajax()) {        
-            $query = Pinjaman::query()->select('pinjaman.created_at', 'kelompok.nama_kelompok', 'nominal', 'jangka_waktu', 'bagi_hasil', 'status', 'pinjaman.id')->join('kelompok', 'pinjaman.id_kelompok', '=', 'kelompok.id');
+            $query = Pinjaman::query()->select('pinjaman.created_at', 'anggota_kelompok.nama_kelompok', 'nominal', 'jangka_waktu', 'bagi_hasil', 'status', 'pinjaman.id')->join('anggota_kelompok', 'pinjaman.id_kelompok', '=', 'anggota_kelompok.id');
             if (Auth::user()->roles == 'anggota') {
-                $query = Pinjaman::query()->select('pinjaman.created_at', 'kelompok.nama_kelompok', 'nominal', 'jangka_waktu', 'bagi_hasil', 'status', 'pinjaman.id')->join('kelompok', 'pinjaman.id_kelompok', '=', 'kelompok.id')->where('user_id', '=', Auth::user()->id);
+                $query = Pinjaman::query()->select('pinjaman.created_at', 'anggota_kelompok.nama_kelompok', 'nominal', 'jangka_waktu', 'bagi_hasil', 'status', 'pinjaman.id')->join('anggota_kelompok', 'pinjaman.id_kelompok', '=', 'anggota_kelompok.id')->where('user_id', '=', Auth::user()->id);
             }
             
 

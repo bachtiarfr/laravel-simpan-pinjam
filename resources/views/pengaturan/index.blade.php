@@ -20,8 +20,8 @@
 
     <div class="row">
         <div class="col-12 mb-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-                <div class="d-block mb-4 mb-md-0">
+            <div class="d-flex justify-content-between flex-md-nowrap align-items-center flex-wrap py-4">
+                <div class="d-block mb-md-0 mb-4">
                     <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                             <li class="breadcrumb-item">
@@ -35,11 +35,11 @@
                                 </a>
                             </li>
 
-                            @can('isKetua')
+                            @can('isDirektur')
                                 <li class="breadcrumb-item"><a href="../">Direktur</a></li>
                             @elsecan('isAdmin')
                                 <li class="breadcrumb-item"><a href="../">Admin</a></li>
-                            @elsecan('isAnggota')
+                            @elsecan('isKelompok')
                                 <li class="breadcrumb-item"><a href="../">Anggota</a></li>
                             @endcan
                             <li class="breadcrumb-item active" aria-current="page">Pengaturan</li>
@@ -49,13 +49,12 @@
                     <p class="mb-0">Anda dapat melihat atau mengubah nilai pinjaman.</p>
                 </div>
             </div>
-            <div class="card border-light shadow-sm components-section">
+            <div class="card border-light components-section shadow-sm">
                 <div class="card-body">
                     <form action="{{ route('pengaturan.update', ['id' => $pengaturan->id]) }}" method="post">
                         @csrf
                         @method('PUT')
-                        <div class="row
-                        mb-4">
+                        <div class="row mb-4">
                             <div class="col-3">
                                 <div class="mb-3">
                                     <label for="waktu_pinjaman">Waktu Pinjaman (Bulan)</label>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Pinjaman;
-use App\Anggota;
+use App\AnggotaKelompok;
 use App\User;
 
 class DashboardController extends Controller
@@ -14,7 +14,7 @@ class DashboardController extends Controller
     {
         $data = [
             'pinjaman' => Pinjaman::all()->count(),
-            'anggota'  => Anggota::all()->count(),
+            'anggota'  => AnggotaKelompok::all()->count(),
             'user'     => User::all()->count(),
         ];
 

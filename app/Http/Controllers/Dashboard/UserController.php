@@ -46,12 +46,12 @@ class UserController extends Controller
                 ->make();
         }
 
-        return view('ketua.user.index');
+        return view('admin.user.index');
     }
 
     public function create()
     {
-        return view('ketua.user.create');
+        return view('admin.user.create');
     }
 
 
@@ -59,7 +59,7 @@ class UserController extends Controller
     {
 
         $request->validate([
-            'name'                  => 'required',
+            'nama_user'             => 'required',
             'email'                 => 'required|email|unique:users',
             'password'              => 'required|min:3',
             'konfirmasi_password'   => 'required|same:password|min:3',
@@ -68,6 +68,7 @@ class UserController extends Controller
 
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
+
 
         User::create($data);
         return redirect()->route('user.index')

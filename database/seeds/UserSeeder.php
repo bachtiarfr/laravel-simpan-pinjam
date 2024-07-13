@@ -14,35 +14,24 @@ class UserSeeder extends Seeder
     {
 
         User::insert([
-            'name' => 'deddy gunawan',
+            'nama_user' => 'deddy gunawan',
             'email' => 'deddygunawan98@gmail.com',
-            'image' => 'deddy.jpg',
             'password' => bcrypt('akudewe123'),
             'roles' => 'admin'
         ]);
 
         User::insert([
-            'name' => 'hafidz masruri',
-            'email' => 'do.crazy192@gmail.com',
-            'image' => 'hafid.jpg',
-            'password' => bcrypt('akudewe123'),
-            'roles' => 'ketua'
-        ]);
-
-        User::insert([
-            'name' => 'ireng banget wir',
+            'nama_user' => 'ireng banget wir',
             'email' => 'jawiricikiwir@gmail.com',
-            'image' => 'jawir.jpg',
             'password' => bcrypt('jomokbangetwir'),
-            'roles' => 'ketua'
+            'roles' => 'direktur'
         ]);
 
         User::insert([
-            'name' => 'ini anggota wir',
+            'nama_user' => 'ini anggota wir',
             'email' => 'anggota_icikiwir@gmail.com',
-            'image' => 'jawir.jpg',
             'password' => bcrypt('jomokbangetwir'),
-            'roles' => 'anggota'
+            'roles' => 'kelompok'
         ]);
     }
 }

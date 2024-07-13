@@ -22,8 +22,8 @@
 
     <div class="row">
         <div class="col-12 mb-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-                <div class="d-block mb-4 mb-md-0">
+            <div class="d-flex justify-content-between flex-md-nowrap align-items-center flex-wrap py-4">
+                <div class="d-block mb-md-0 mb-4">
                     <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                             <li class="breadcrumb-item">
@@ -37,11 +37,11 @@
                                 </a>
                             </li>
 
-                            @can('isKetua')
+                            @can('isDirektur')
                                 <li class="breadcrumb-item"><a href="../">Direktur</a></li>
                             @elsecan('isAdmin')
                                 <li class="breadcrumb-item"><a href="../">Admin</a></li>
-                            @elsecan('isAnggota')
+                            @elsecan('isKelompok')
                                 <li class="breadcrumb-item"><a href="../">Anggota</a></li>
                             @endcan
 
@@ -53,7 +53,7 @@
                     <p class="mb-0">Ubah data user.</p>
                 </div>
             </div>
-            <div class="card border-light shadow-sm components-section">
+            <div class="card border-light components-section shadow-sm">
                 <div class="card-body">
                     <div class="row mb-4">
                         <div class="col-lg-4 col-sm-6">

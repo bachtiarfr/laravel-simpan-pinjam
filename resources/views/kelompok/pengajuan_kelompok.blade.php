@@ -1,8 +1,22 @@
 @extends('layouts.app')
 
-@section('title', 'Pengajuan Kelompok')
+@section('title', 'Data Pengajuan')
 
 @section('content')
+
+    @if (session('status'))
+        @push('scripts')
+            <script>
+                swal({
+                    title: "Good job!",
+                    text: "{{ session('status') }}",
+                    icon: "success",
+                    button: false,
+                    timer: 3000
+                });
+            </script>
+        @endpush
+    @endif
 
     @if (session('error'))
         @push('scripts')
@@ -18,29 +32,10 @@
         @endpush
     @endif
 
-    @if ($kelompok != null && $approval_status == 'waiting')
-        <div class="alert alert-secondary text-white" role="alert">
-            Anda telah melakukan pengajuan, silahkan tunggu admin untuk memverifikasi pengajuan anda
-        </div>
-    @endif
-
-    @if ($kelompok != null && $approval_status == 'approved')
-        <div class="alert alert-success text-white" role="alert">
-            Pengajuan kelompok anda telah di verifikasi oleh admin
-        </div>
-    @endif
-
-    @if ($kelompok != null && $approval_status == 'reject')
-        <div class="alert alert-danger text-white" role="alert">
-            Pengajuan kelompok anda di tolak oleh admin karena:
-            {{ $kelompok->approval_reason }}
-        </div>
-    @endif
-
     <div class="row">
         <div class="col-12 mb-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-                <div class="d-block mb-4 mb-md-0">
+            <div class="d-flex justify-content-between flex-md-nowrap align-items-center flex-wrap py-4">
+                <div class="d-block mb-md-0 mb-4">
                     <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                             <li class="breadcrumb-item">
@@ -53,114 +48,129 @@
                                     </svg>
                                 </a>
                             </li>
-
-                            @can('isKetua')
+                            @can('isDirektur')
                                 <li class="breadcrumb-item"><a href="../">Direktur</a></li>
                             @elsecan('isAdmin')
                                 <li class="breadcrumb-item"><a href="../">Admin</a></li>
-                            @elsecan('isAnggota')
+                            @elsecan('isKelompok')
                                 <li class="breadcrumb-item"><a href="../">Anggota</a></li>
                             @endcan
-                            <li class="breadcrumb-item active" aria-current="page">Pengajuan Kelompok</li>
+                            <li class="breadcrumb-item active" aria-current="page">Kelompok</li>
                         </ol>
                     </nav>
                     <h2 class="h4">Pengajuan Kelompok</h2>
-                    <p class="mb-0">Pengajuan data kelompok untuk dapat memulai peminjaman.</p>
+                    <p class="mb-0">Daftar user yang mengajukan kelompok.</p>
                 </div>
             </div>
-            <div class="card border-light shadow-sm components-section">
+            <div class="card border-light components-section shadow-sm">
                 <div class="card-body">
-                    <form action="{{ route('pengajuan-kelompok.store') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row mb-4">
-                            <div class="col-lg-5 col-sm-6">
-                                <div class="mb-3">
-                                    <label for="ktp">No. KTP</label>
-                                    <input type="text"
-                                        class="form-control {{ $errors->first('no_ktp') ? 'is-invalid' : '' }}"
-                                        id="no_ktp" name="no_ktp"
-                                        value="{{ $kelompok != null ? $kelompok->no_ktp : old('no_ktp') }}"
-                                        {{ ($kelompok != null && $approval_status == 'waiting') || $approval_status == 'approved' ? 'disabled' : null }}>
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('no_ktp') }}
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama_kelompok">Nama Kelompok</label>
-                                    <input type="text"
-                                        class="form-control {{ $errors->first('nama_kelompok') ? 'is-invalid' : '' }}"
-                                        id="nama_kelompok" name="nama_kelompok"
-                                        value="{{ $kelompok != null ? $kelompok->nama_kelompok : old('nama_kelompok') }}"
-                                        {{ ($kelompok != null && $approval_status == 'waiting') || $approval_status == 'approved' ? 'disabled' : null }}>
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('nama_kelompok') }}
-                                    </div>
-                                </div>
-                                <div class="my-3">
-                                    <label for="textarea">Alamat</label>
-                                    <textarea class="form-control {{ $errors->first('alamat') ? 'is-invalid' : '' }}" placeholder="Tulis alamat lengkap..."
-                                        id="alamat" name="alamat" rows="4">{{ $kelompok != null ? $kelompok->alamat : old('alamat') }}</textarea>
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('alamat') }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-sm-6">
-                                <div class="mb-3">
-                                    <label for="nama_kelompok">Telepon</label>
-                                    <input type="text"
-                                        class="form-control {{ $errors->first('telepon') ? 'is-invalid' : '' }}"
-                                        id="telepon" name="telepon"
-                                        {{ ($kelompok != null && $approval_status == 'waiting') || $approval_status == 'approved' ? 'disabled' : null }}
-                                        value="{{ $kelompok != null ? $kelompok->telepon : old('telepon') }}">
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('telepon') }}
-                                    </div>
-                                </div>
+                    <br>
 
-                                <div class="mb-4">
-                                    <label for="jenis_kelompok">Jenis Kelompok</label>
-                                    {{-- <input type="text"
-                                    class="form-control {{ $errors->first('anggota_id') ? 'is-invalid' : '' }}"
-                                    id="anggota_id" name="anggota_id"> --}}
-                                    <select
-                                        class="form-select {{ $errors->first('jenis_kelompok_id') ? 'is-invalid' : '' }}"
-                                        name="jenis_kelompok_id" id="jenis_kelompok_id"
-                                        {{ ($kelompok != null && $approval_status == 'waiting') || $approval_status == 'approved' ? 'disabled' : null }}>
-                                        <option value="{{ $kelompok != null ? $kelompok->jenis_kelompok : '' }}"
-                                            selected="selected">
-                                            {{ $kelompok != null ? $kelompok->jenis_kelompok : '' }}
-                                        </option>
-                                        @foreach ($jenis_kelompok as $jk)
-                                            <option value="{{ $jk->id }}">{{ $jk->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('jenis_kelompok_id') }}
-                                    </div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="file">Syarat Administrasi</label>
-                                    <input type="file" name="file" id="file"
-                                        {{ ($kelompok != null && $approval_status == 'waiting') || $approval_status == 'approved' ? 'disabled' : null }}>
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('file') }}
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    {{-- <input type="submit" value="Simpan"> --}}
-                                    <button type="submit" class="btn btn-primary"
-                                        {{ ($kelompok != null && $approval_status == 'waiting') || $approval_status == 'approved' ? 'disabled' : null }}>Simpan</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    <table class="table-hover table-striped table" id="KetuaShowKelompokData">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama Ketua Kelompok</th>
+                                <th>Dokumen</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
 
                 </div>
+                <footer class="footer section py-2">
             </div>
         </div>
     </div>
 
 @endsection
+
+@push('scripts')
+    <script>
+        // AJAX DataTable
+        var datatable = $('#KetuaShowKelompokData').DataTable({
+            processing: true,
+            serverSide: true,
+            ordering: true,
+            ajax: {
+                url: '{!! url()->current() !!}',
+            },
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'user_name',
+                    name: 'user_name'
+                },
+                {
+                    data: 'file_dokumen',
+                    name: 'file_dokumen'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false,
+                    width: '20%',
+                },
+            ]
+        });
+
+        var datatable = $('#DirekturShowPengajuanKelompokData').DataTable({
+            processing: true,
+            serverSide: true,
+            ordering: true,
+            ajax: {
+                url: '{!! url()->current() !!}',
+            },
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'user_name',
+                    name: 'user_name'
+                },
+                {
+                    data: 'file_dokumen',
+                    name: 'file_dokumen'
+                },
+            ]
+        });
+    </script>
+@endpush
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action={{ route('approval.pengajuan.kelompok') }} method="post">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Penolakan pengajuan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+
+                        <div class="my-3">
+                            <label for="textarea">Alasan</label>
+                            <textarea class="form-control {{ $errors->first('alamat') ? 'is-invalid' : '' }}"
+                                placeholder="Tulis alasan kenapa pengajuan ditolak..." id="alasan" name="alasan" rows="4">{{ old('alasan') }}</textarea>
+                            <div class="invalid-feedback">
+                                {{ $errors->first('alasan') }}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary p-2">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

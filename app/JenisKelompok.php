@@ -12,6 +12,6 @@ class JenisKelompok extends Model
 
     public function kelompok()
     {
-        return $this->hasMany(Kelompok::class, 'jenis_kelompok_id', 'id');
+        return $this->hasMany(AnggotaKelompok::class, 'jenis_kelompok_id', 'id');
     }
 }

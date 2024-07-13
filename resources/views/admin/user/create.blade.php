@@ -6,8 +6,8 @@
 
     <div class="row">
         <div class="col-12 mb-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-                <div class="d-block mb-4 mb-md-0">
+            <div class="d-flex justify-content-between flex-md-nowrap align-items-center flex-wrap py-4">
+                <div class="d-block mb-md-0 mb-4">
                     <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                             <li class="breadcrumb-item">
@@ -20,7 +20,7 @@
                                     </svg>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="../">Direktur</a></li>
+                            <li class="breadcrumb-item"><a href="../">Admin</a></li>
                             <li class="breadcrumb-item"><a href="../user">User</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Tambah User</li>
                         </ol>
@@ -30,7 +30,7 @@
                 </div>
 
             </div>
-            <div class="card border-light shadow-sm components-section">
+            <div class="card border-light components-section shadow-sm">
                 <div class="card-body">
                     <form action="{{ route('user.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
@@ -38,12 +38,12 @@
                             <div class="col-lg-5 col-sm-6">
 
                                 <div class="mb-3">
-                                    <label for="name">Nama Lengkap</label>
+                                    <label for="nama_user">Nama Lengkap</label>
                                     <input type="text"
-                                        class="form-control {{ $errors->first('name') ? 'is-invalid' : '' }}" id="name"
-                                        name="name" value="{{ old('name') }}">
+                                        class="form-control {{ $errors->first('nama_user') ? 'is-invalid' : '' }}"
+                                        id="nama_user" name="nama_user" value="{{ old('nama_user') }}">
                                     <div class="invalid-feedback">
-                                        {{ $errors->first('name') }}
+                                        {{ $errors->first('nama_user') }}
                                     </div>
                                 </div>
 
@@ -56,14 +56,6 @@
                                         {{ $errors->first('email') }}
                                     </div>
                                 </div>
-
-                                {{-- <div class="mb-3">
-                                <label for="image">Image</label>
-                                <input type="file" name="image" id="image">
-                                <div class="invalid-feedback">
-                                    {{$errors->first('image')}}
-                                </div>
-                            </div> --}}
 
                                 <div class="mb-3">
                                     <label for="password">Password</label>
@@ -91,7 +83,8 @@
                                     <select name="roles" required class="form-control">
                                         {{-- <option value="ketua">Ketua</option> --}}
                                         <option value="admin">Admin</option>
-                                        <option value="anggota">Anggota</option>
+                                        <option value="direktur">Direktur</option>
+                                        <option value="kelompok">Ketua Kelompok / Kelompok</option>
                                     </select>
                                 </div>
 

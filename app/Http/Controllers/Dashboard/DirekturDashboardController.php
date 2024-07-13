@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\AnggotaKelompok;
 use App\Http\Controllers\Controller;
 use App\Pinjaman;
-use App\Kelompok;
 use App\User;
+use App\DokumenAdministrasi;
 
-class KetuaDashboardController extends Controller
+class DirekturDashboardController extends Controller
 {
     public function index()
     {
@@ -16,10 +17,10 @@ class KetuaDashboardController extends Controller
             'total_pinjaman' => 'Rp ' . number_format(Pinjaman::sum('total'), 0, ',', '.'),
             'pinjaman' => Pinjaman::all()->count(),
             'pinjaman_lunas' => Pinjaman::all()->where('status', 'lunas')->count(),
-            'kelompok'  => Kelompok::all()->count(),
+            'kelompok'  => AnggotaKelompok::all()->count(),
             'user'     => User::all()->count(),
-            'butuh_verifikasi'     => Kelompok::all()->where('approval_status', 'waiting')->count(),
-            'terverifikasi'     => Kelompok::all()->where('approval_status', 'approved')->count(),
+            'butuh_verifikasi'     => DokumenAdministrasi::all()->where('status_persetujuan', 'menunggu')->count(),
+            'terverifikasi'     => DokumenAdministrasi::all()->where('status_persetujuan', 'disetujui')->count(),
         ];
 
         return view('ketua.dashboard.index', $data);

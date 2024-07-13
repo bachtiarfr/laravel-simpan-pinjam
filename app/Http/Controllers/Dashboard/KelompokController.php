@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\AnggotaKelompok;
 use App\Http\Controllers\Controller;
-use App\Kelompok;
 use App\JenisKelompok;
 use App\User;
+use App\DokumenAdministrasi;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -15,11 +16,11 @@ class KelompokController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $query = Kelompok::select('kelompok.id', 'kelompok.no_ktp', 'kelompok.nama_kelompok', 'kelompok.alamat', 'kelompok.telepon', 'kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok', 'kelompok.approval_status')->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'kelompok.jenis_kelompok_id');            
+            $query = AnggotaKelompok::select('anggota_kelompok.id', 'anggota_kelompok.no_ktp', 'anggota_kelompok.nama_kelompok', 'anggota_kelompok.alamat', 'anggota_kelompok.telepon', 'anggota_kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok')->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'anggota_kelompok.jenis_kelompok_id');            
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
-                    return  $item->approval_status == 'approved' ? '
+                    return  $item->status_persetujuan == 'disetujui' ? '
                         <div class="btn-group">
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle mr-1 mb-1 btn-sm" 
@@ -55,7 +56,7 @@ class KelompokController extends Controller
     public function create()
     {
         $jenis_kelompok = JenisKelompok::all();
-        $users = User::all()->where('roles', '=', 'anggota');
+        $users = User::all()->where('roles', '=', 'kelompok');
         return view('kelompok.kelompok_create', compact('jenis_kelompok', 'users'));
     }
 
@@ -67,12 +68,12 @@ class KelompokController extends Controller
             'alamat' => 'required|max:200',
             'telepon' => 'required|max:12',
             'user_id' => 'required|numeric',
-            'jenis_kelompok_id' => 'required|numeric',
+            'jenis_kelompok_id' => 'required|numeric' ,
         ]);
 
 
 
-        $kelompok = new Kelompok;
+        $kelompok = new AnggotaKelompok();
         $kelompok->no_ktp = $request->no_ktp;
         $kelompok->nama_kelompok = $request->nama_kelompok;
         $kelompok->alamat = $request->alamat;
@@ -86,21 +87,21 @@ class KelompokController extends Controller
         return redirect()->route('kelompok.index')->with(['status' => 'Data kelompok berhasil ditambahkan']);
     }
 
-    public function show(Kelompok $kelompok)
+    public function show(AnggotaKelompok $kelompok)
     {
         //
     }
 
     public function edit($k)
     {
-        $kelompok = Kelompok::Find($k);
+        $kelompok = AnggotaKelompok::Find($k);
         return view('kelompok.kelompok_show', compact('kelompok'));
     }
 
     public function approvalByID($k)
     {
-        $kelompok = Kelompok::Find($k);
-        if ($kelompok->approval_status == "approved") {
+        $kelompok = AnggotaKelompok::Find($k);
+        if ($kelompok->status_persetujuan == "approved") {
             return redirect()->route('kelompok.index')->with(['status' => 'Pengajuan kelompok telah di setujui']);
         }
         return view('kelompok.kelompok_approval', compact('kelompok'));
@@ -115,7 +116,7 @@ class KelompokController extends Controller
             'telepon' => 'required',
         ]);
 
-        $kelompok = Kelompok::findOrFail($k);
+        $kelompok = AnggotaKelompok::findOrFail($k);
         $data = $request->all();
 
         $kelompok->update($data);
@@ -124,8 +125,8 @@ class KelompokController extends Controller
 
     public function approveKelompok(Request $request, $k)
     {
-        $data = ['approval_status' => 'approved'];
-        $kelompok = Kelompok::findOrFail($k);
+        $data = ['status_persetujuan' => 'disetujui'];
+        $kelompok = DokumenAdministrasi::findOrFail($k);
         $kelompok->update($data);
 
         return redirect()->route('kelompok.index')->with(['status' => 'Pengajuan kelompok telah di setujui']);
@@ -139,11 +140,11 @@ class KelompokController extends Controller
         ]);
 
         // $data = new Kelompok;
-        // $data->approval_status = 'reject';
+        // $data->status_persetujuan = 'reject';
         // $data->reject_reason = $request->alasan;
-        $data = ['approval_status' => 'reject'];
+        $data = ['status_persetujuan' => 'reject'];
         
-        $kelompok = Kelompok::findOrFail($k);
+        $kelompok = AnggotaKelompok::findOrFail($k);
         $kelompok->update($data);
 
         return redirect()->route('kelompok.index')->with(['status' => 'Pengajuan kelompok telah di tolak']);
@@ -152,7 +153,7 @@ class KelompokController extends Controller
 
     public function destroy($k)
     {
-        $kelompok = Kelompok::findOrFail($k);
+        $kelompok = AnggotaKelompok::findOrFail($k);
         $kelompok->forceDelete();
         return redirect()->route('kelompok.index')
             ->with(['status' => 'Data Kelompok Berhasil Dihapus']);

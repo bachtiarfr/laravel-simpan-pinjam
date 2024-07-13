@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class isKetua
+class isDirektur
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class isKetua
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->roles != 'ketua') {
+        if (Auth::user()->roles != 'direktur') {
             return redirect('/');
         }
         return $next($request);

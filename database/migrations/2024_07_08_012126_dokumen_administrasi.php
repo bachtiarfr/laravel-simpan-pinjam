@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePengaturanTable extends Migration
+class DokumenAdministrasi extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreatePengaturanTable extends Migration
      */
     public function up()
     {
-        Schema::create('pengaturan', function (Blueprint $table) {
+        Schema::create('dokumen_administrasi', function (Blueprint $table) {
             $table->id();
-            $table->char('waktu_pinjaman', 2);
-            $table->integer('max_pinjaman');
-            $table->float('jasa_pinjam')->nullable();
-
+            $table->string('path');
+            $table->integer('user_id');
+            $table->enum('status_persetujuan',array('menunggu','ditolak','disetujui'))->default('menunggu');
+            $table->string('alasan_persetujuan', 255);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreatePengaturanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pengaturan');
+        Schema::dropIfExists('dokumen_administrasi');
     }
 }
