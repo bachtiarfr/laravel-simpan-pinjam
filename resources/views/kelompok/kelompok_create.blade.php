@@ -101,21 +101,6 @@
                                         {{ $errors->first('user_id') }}
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="jenis_kelompok">Jenis Kelompok</label>
-                                    {{-- <input type="text" class="form-control {{ $errors->first('anggota_id') ? 'is-invalid' : '' }}" id="anggota_id" name="anggota_id"> --}}
-                                    <select
-                                        class="form-select {{ $errors->first('jenis_kelompok_id') ? 'is-invalid' : '' }}"
-                                        name="jenis_kelompok_id" id="jenis_kelompok_id">
-                                        <option value=""></option>
-                                        @foreach ($jenis_kelompok as $jk)
-                                            <option value="{{ $jk->id }}">{{ $jk->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('jenis_kelompok_id') }}
-                                    </div>
-                                </div>
                             </div>
                             <div class="col-sm-12">
                                 <label for="textarea">Alamat</label>

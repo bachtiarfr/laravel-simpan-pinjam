@@ -16,15 +16,14 @@ class PengajuanKelompokController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $query = DokumenAdministrasi::select('dokumen_administrasi.id', 'dokumen_administrasi.path AS file_dokumen', 'dokumen_administrasi.user_id', 'dokumen_administrasi.status_persetujuan', 'dokumen_administrasi.alasan_persetujuan', 'users.nama_user AS user_name')->join('users', 'dokumen_administrasi.user_id', '=', 'users.id');            
+            $query = DokumenAdministrasi::select('dokumen_administrasi.id', 'dokumen_administrasi.path AS file_dokumen', 'dokumen_administrasi.user_id', 'dokumen_administrasi.status_persetujuan', 'dokumen_administrasi.alasan_persetujuan', 'users.nama_user AS user_name')
+                ->join('users', 'dokumen_administrasi.user_id', '=', 'users.id')
+                ->where('dokumen_administrasi.status_persetujuan', '=', 'menunggu');
 
             return DataTables::of($query)
-            ->addColumn('action', function ($item) {
+                ->addColumn('action', function ($item) {
                     return 
-                    ' 
-                        <button class="btn btn-secondary mr-1 mb-1 btn-sm" data-toggle="modal"
-                        data-target="#exampleModal"><span>Detail</span></button> 
-                    ';
+                        '<button id="buttonModal" class="btn btn-secondary mr-1 mb-1 btn-sm" data-toggle="modal" data-target="#exampleModal" data-dokumen-id="'. $item->id. '" data-dokumen-path="'. $item->file_dokumen. '"><span>Detail</span></button>';
                 })
                 ->rawColumns(['file_dokumen','action'])
                 ->make();
@@ -33,8 +32,29 @@ class PengajuanKelompokController extends Controller
         return view('kelompok.pengajuan_kelompok');
     }
 
-    public function approvalPage(){
-        return view('kelompok.kelompok_approval');
+    public function approval(Request $request){
+
+        $request->validate([
+            'id_pengajuan' => 'required',
+            'alasan' => 'required|string',
+            'status_persetujuan' => 'required',
+        ]);
+        
+
+        $dokumen = DokumenAdministrasi::findOrFail($request->id_pengajuan);
+
+        if (!$dokumen) {
+            return redirect()->route('pengajuan-kelompok.index')->with(['error' => 'Dokument tidak terdaftar']);
+        }
+
+        $data = [
+            "alasan_persetujuan" => $request->alasan,
+            'status_persetujuan' => $request->status_persetujuan,
+        ];
+
+        $dokumen->update($data);
+
+        return redirect()->route('pengajuan-kelompok.index')->with(['status' => 'Pengajuan kelompok berhasil diperbarui']);
     }
 
     public function create()

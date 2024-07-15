@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Pinjaman;
-use App\Kelompok;
+use App\AnggotaKelompok;
 use App\Pengaturan;
 use App\BayarPinjaman;
 use \Carbon\Carbon;
@@ -90,29 +90,23 @@ class PinjamanController extends Controller
 
     public function create()
     {
-        $data_kelompok = Kelompok::all();
-        $data_pengaturan = Pengaturan::all()->take(1)->first();
+        $data_kelompok = AnggotaKelompok::all();
 
-        if ($data_pengaturan == null) {
-            return redirect()->route('pinjaman.index')->with(['error' => 'Anda harus mengatur pinjaman terlebih dahulu di pengaturan dashboard ketua']);
-        }
-
-        return view('pinjaman.pinjaman_create', compact('data_kelompok', 'data_pengaturan'));
+        return view('pinjaman.pinjaman_create', compact('data_kelompok'));
     }
 
 
     public function store(Request $request)
     {
         $request->validate([
-            'id_kelompok' => 'required|exists:kelompok,id',
+            'id_kelompok' => 'required|exists:anggota_kelompok,id',
             'jangka_waktu' => 'required|integer|between:1,12',
             'nominal' => 'required|numeric',
             'keterangan' => 'max:200',
         ]);
 
-        $cek_jasa = Pengaturan::first();
         $nominal = $request->nominal;
-        $bagi_hasil = $cek_jasa->jasa_pinjam / 100;
+        $bagi_hasil = 20 / 100;
         $waktu = $request->jangka_waktu;
 
         $pokok = $nominal / $waktu;
@@ -122,7 +116,7 @@ class PinjamanController extends Controller
 
         $cek_pinjaman_user = Pinjaman::where('id_kelompok', $request->kelompok_id)
             ->where(function ($q) {
-                $q->where('status', 'pending')
+                $q->where('status', 'sedang_berjalan')
                     ->orWhere('status', 'belum_lunas');
             })
             ->exists();
@@ -131,23 +125,17 @@ class PinjamanController extends Controller
             return redirect()->route('pinjaman.create')->with(['error' => 'Kelompok ini masih memiliki tanggungan pinjaman.']);
         } else {
 
-            $kelompok = Kelompok::find($request->id_kelompok);
-
-            if ($kelompok->approval_status != 'approved') {
-                return redirect()->route('pinjaman.create')->with(['error' => 'Kelompok ini belom terverifikasi oleh ketua pengurus.']);
-            }
-
             $pinjaman = Pinjaman::create([
                 'id_kelompok' =>  $request->id_kelompok,
                 'nominal' => $nominal,
-                'bagi_hasil' => $cek_jasa->jasa_pinjam,
+                'bagi_hasil' => 20,
                 'jangka_waktu' => $request->jangka_waktu,
                 'bayar_pokok' => $pokok,
                 'hasil_bagi' => $hasil_bagi,
                 'bayar_perbulan' => $perbulan,
                 'total' => $total,
                 'keterangan' => $request->keterangan,
-                'status' => 'pending',
+                'status' => 'belum_lunas',
             ]);
 
             for ($bulan = 1; $bulan <= $waktu; $bulan++) {
@@ -175,7 +163,7 @@ class PinjamanController extends Controller
 
     public function edit(Pinjaman $pinjaman)
     {
-        $data_kelompok = Kelompok::all();
+        $data_kelompok = AnggotaKelompok::all();
         $data_pengaturan = Pengaturan::first();
         $data_pinjaman = Pinjaman::with('kelompok')->find($pinjaman->id);
         error_log($data_pinjaman);

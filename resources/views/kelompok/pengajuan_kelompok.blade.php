@@ -3,7 +3,6 @@
 @section('title', 'Data Pengajuan')
 
 @section('content')
-
     @if (session('status'))
         @push('scripts')
             <script>
@@ -85,92 +84,118 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="{{ route('approval.pengajuan.kelompok') }}" method="post">
+                @csrf
+                <input type="text" id="id_pengajuan" name="id_pengajuan" value="" hidden>
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Dokumen Pengajuan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-4">
+                            <embed id="documentEmbed" src="" width="600" height="500" alt="pdf"
+                                class="rounded border" />
+                            <div class="my-3">
+                                <label for="textarea">Alasan</label>
+                                <textarea class="form-control {{ $errors->first('alamat') ? 'is-invalid' : '' }}"
+                                    placeholder="Tulis alasan penolakan / disetujui terkait pengajuan ini..." id="alasan" name="alasan"
+                                    rows="4">{{ old('alasan') }}</textarea>
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('alasan') }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="aksi">Aksi</label>
+                                {{-- <input type="text" class="form-control {{ $errors->first('anggota_id') ? 'is-invalid' : '' }}" id="anggota_id" name="anggota_id"> --}}
+                                <select class="form-select {{ $errors->first('aksi_id') ? 'is-invalid' : '' }}"
+                                    name="status_persetujuan" id="aksi_id">
+                                    <option value=""></option>
+
+                                    <option value="disetujui">Setuju</option>
+                                    <option value="ditolak">Tolak</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('aksi_id') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary p-2">Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 @endsection
 
 @push('scripts')
     <script>
-        // AJAX DataTable
-        var datatable = $('#KetuaShowKelompokData').DataTable({
-            processing: true,
-            serverSide: true,
-            ordering: true,
-            ajax: {
-                url: '{!! url()->current() !!}',
-            },
-            columns: [{
-                    data: 'id',
-                    name: 'id'
-                },
-                {
-                    data: 'user_name',
-                    name: 'user_name'
-                },
-                {
-                    data: 'file_dokumen',
-                    name: 'file_dokumen'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false,
-                    width: '20%',
-                },
-            ]
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const documentEmbed = document.getElementById('documentEmbed');
 
-        var datatable = $('#DirekturShowPengajuanKelompokData').DataTable({
-            processing: true,
-            serverSide: true,
-            ordering: true,
-            ajax: {
-                url: '{!! url()->current() !!}',
-            },
-            columns: [{
-                    data: 'id',
-                    name: 'id'
+            // Function to attach event listeners
+            function attachEventListeners() {
+                document.querySelectorAll('button[data-toggle="modal"]').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const documentId = this.getAttribute('data-dokumen-id');
+                        const documentPath = this.getAttribute('data-dokumen-path');
+                        const documentUrl = `{{ asset('docs') }}/${documentPath}`;
+
+                        document.getElementById('id_pengajuan').value = documentId;
+
+                        // Update the embed source
+                        documentEmbed.setAttribute('src', documentUrl);
+                    });
+                });
+            }
+
+            // AJAX DataTable
+            var datatable = $('#KetuaShowKelompokData').DataTable({
+                processing: true,
+                serverSide: true,
+                ordering: true,
+                ajax: {
+                    url: '{!! url()->current() !!}',
                 },
-                {
-                    data: 'user_name',
-                    name: 'user_name'
-                },
-                {
-                    data: 'file_dokumen',
-                    name: 'file_dokumen'
-                },
-            ]
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'user_name',
+                        name: 'user_name'
+                    },
+                    {
+                        data: 'file_dokumen',
+                        name: 'file_dokumen'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false,
+                        width: '20%',
+                    },
+                ],
+                drawCallback: function() {
+                    // Attach event listeners after DataTables has finished rendering
+                    attachEventListeners();
+                }
+            });
+
+            // Initial attachment of event listeners
+            attachEventListeners();
         });
     </script>
 @endpush
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form action={{ route('approval.pengajuan.kelompok') }} method="post">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Penolakan pengajuan</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row mb-4">
-
-                        <div class="my-3">
-                            <label for="textarea">Alasan</label>
-                            <textarea class="form-control {{ $errors->first('alamat') ? 'is-invalid' : '' }}"
-                                placeholder="Tulis alasan kenapa pengajuan ditolak..." id="alasan" name="alasan" rows="4">{{ old('alasan') }}</textarea>
-                            <div class="invalid-feedback">
-                                {{ $errors->first('alasan') }}
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary p-2">Save changes</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>

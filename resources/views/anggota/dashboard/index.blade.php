@@ -24,7 +24,7 @@
         <h4 class="font-weight-light text-center">👋 Selamat Datang </h4>
         <h4 class="font-weight-bold text-center">{{ auth()->user()->nama_user }}</h4>
 
-        @if ($status_persetujuan == 'ditolak' || ($status_persetujuan = ''))
+        @if ($status_pengajuan == null || $status_pengajuan['status_persetujuan'] == 'ditolak')
             <div class="row justify-content-center my-5">
                 <div class="col-1 col-sm-10">
                     <div class="card card-body mb-4 border-0 shadow">
@@ -45,12 +45,13 @@
                     </div>
                 </div>
             </div>
-        @else
+        @elseif ($status_pengajuan['status_persetujuan'] == 'menunggu')
             <div class="alert alert-success text-center text-white" role="alert">
                 Anda telah mengirimkan file dokumen administrasi silahkan tunggu beberapa saat untuk di verifikasi oleh
                 direktur
             </div>
-
+        @elseif ($status_pengajuan['status_persetujuan'] == 'disetujui')
+            <div></div>
     </div>
     @endif
     <div class="row justify-content-center my-5">

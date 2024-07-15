@@ -91,11 +91,11 @@
                         </span>
                         <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                     </span>
-                    <div class="multi-level {{ Request::route()->getName() == 'admin.kelompok.index' ? 'show' : '' }} collapse"
+
+                    <div class="multi-level {{ Request::route()->getName() == 'kelompok.index' ? 'show' : '' }} collapse"
                         role="list" id="submenu-app-kelompok" aria-expanded="false">
                         <ul class="flex-column nav">
-                            <li
-                                class="nav-item {{ Request::route()->getName() == 'admin.kelompok.index' ? 'active' : '' }}">
+                            <li class="nav-item {{ Request::route()->getName() == 'kelompok.index' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('kelompok.index') }}"><span>Data
                                         Kelompok</span></a>
                             </li>
@@ -161,7 +161,7 @@
                         <ul class="flex-column nav">
                             <li
                                 class="nav-item {{ Request::route()->getName() == 'pengajuan-kelompok' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('kelompok.index') }}"><span>Data
+                                <a class="nav-link" href="{{ route('direktur.kelompok.index') }}"><span>Data
                                         Kelompok</span></a>
                             </li>
                             <li

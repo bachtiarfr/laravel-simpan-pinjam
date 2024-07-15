@@ -98,8 +98,7 @@
                                     <label for="bagi_hasil">Bagi Hasil (%)</label>
                                     <input type="text"
                                         class="form-control {{ $errors->first('bagi_hasil') ? 'is-invalid' : '' }}"
-                                        id="bagi_hasil" name="bagi_hasil" value="{{ $data_pengaturan->jasa_pinjam }}"
-                                        disabled readonly>
+                                        id="bagi_hasil" name="bagi_hasil" value="20" disabled readonly>
                                     <div class="invalid-feedback">
                                         {{ $errors->first('bagi_hasil') }}
                                     </div>
@@ -118,11 +117,10 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="jangka_waktu">Jangka Waktu</label>
+                                    <label for="jangka_waktu">Jangka Waktu (Bulan)</label>
                                     <input type="text"
                                         class="form-control {{ $errors->first('jangka_waktu') ? 'is-invalid' : '' }}"
-                                        id="jangka_waktu" name="jangka_waktu"
-                                        value="{{ $data_pengaturan->waktu_pinjaman }}" autocomplete="off">
+                                        id="jangka_waktu" name="jangka_waktu" value="" autocomplete="off">
                                     <div class="invalid-feedback">
                                         {{ $errors->first('jangka_waktu') }}
                                     </div>
@@ -162,7 +160,6 @@
             </div>
         </div>
 
-
     @endsection
 
     @push('scripts')
@@ -172,34 +169,24 @@
                 document.getElementById("nama_kelompok").value = get_kelompok;
             });
 
-            // On keyUp input jumlah        
             const nominal = document.getElementById('nominal');
-            nominal.addEventListener('keyup', updateValue);
+            const jangka_waktu = document.getElementById('jangka_waktu');
 
-            jangka_waktu.addEventListener('keyup', updateValue);
+            nominal.addEventListener('keyup', updatePerbulan);
+            jangka_waktu.addEventListener('keyup', updatePerbulan);
 
-            function updateValue(e) {
-                const cek_attr = e.target.getAttribute('name');
+            function updatePerbulan() {
+                const pinjam = parseFloat(nominal.value) || 0;
+                const waktu = parseFloat(jangka_waktu.value) || 0;
 
-                if (cek_attr === 'nominal') {
-                    const bagi_hasil = {{ $data_pengaturan->jasa_pinjam }} / 100;
-                    const jangka_waktu = document.getElementById('jangka_waktu').value;
-
-                    const pinjam = e.target.value;
-                    const pokok = pinjam / jangka_waktu;
+                if (pinjam > 0 && waktu > 0) {
+                    const bagi_hasil = 20 / 100;
+                    const pokok = pinjam / waktu;
                     const bagiHasil = bagi_hasil * pinjam;
                     const total = pokok + bagiHasil;
-                    document.getElementById('perbulan').value = total;
-
+                    document.getElementById('perbulan').value = total.toFixed(2);
                 } else {
-                    const bagi_hasil = {{ $data_pengaturan->jasa_pinjam }} / 100;
-                    const jangka_waktu = e.target.value;
-
-                    const pinjam = document.getElementById('nominal').value;
-                    const pokok = pinjam / jangka_waktu;
-                    const bagiHasil = bagi_hasil * pinjam;
-                    const total = pokok + bagiHasil;
-                    document.getElementById('perbulan').value = total;
+                    document.getElementById('perbulan').value = 0;
                 }
             }
         </script>
