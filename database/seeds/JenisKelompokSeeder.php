@@ -14,11 +14,11 @@ class JenisKelompokSeeder extends Seeder
     public function run()
     {
         JenisKelompok::insert([
-            'name' => 'UAP (usaha ekonomi produktif)',
+            'name' => 'UAP (Usaha Ekonomi Produktif)',
         ]);
 
         JenisKelompok::insert([
-            'name' => 'SPP (simpan pinjam perempuan)',
+            'name' => 'SPP (Simpan Pinjam Perempuan)',
         ]);
     }
 }

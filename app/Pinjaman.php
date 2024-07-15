@@ -10,13 +10,13 @@ class Pinjaman extends Model
     protected $table = 'pinjaman';
     protected $primaryKey = 'id';
 
-    protected $fillable = ['anggota_id', 'nominal', 'bagi_hasil', 'jangka_waktu', 'bayar_pokok', 'hasil_bagi', 'bayar_perbulan', 'total', 'keterangan', 'status'];
+    protected $fillable = ['id_kelompok', 'nominal', 'bagi_hasil', 'jangka_waktu', 'bayar_pokok', 'hasil_bagi', 'bayar_perbulan', 'total', 'keterangan', 'status'];
 
     use SoftDeletes;
 
-    public function anggota()
+    public function kelompok()
     {
-        return $this->belongsTo(Anggota::class, 'anggota_id');
+        return $this->belongsTo(Kelompok::class, 'kelompok_id');
     }
 
     public function bayar_pinjaman()

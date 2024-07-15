@@ -16,8 +16,8 @@ class CreatePinjamanTable extends Migration
         Schema::create('pinjaman', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('anggota_id');
-            $table->foreign('anggota_id')->references('id')->on('anggota')->onDelete('cascade');
+            $table->foreignId('id_kelompok');
+            $table->foreign('id_kelompok')->references('id')->on('anggota_kelompok')->onDelete('cascade');
 
             $table->integer('nominal');
             $table->float('bagi_hasil');
@@ -27,7 +27,7 @@ class CreatePinjamanTable extends Migration
             $table->integer('bayar_perbulan');
             $table->integer('total');
             $table->text('keterangan')->nullable();
-            $table->enum('status', ['pending', 'belum_lunas', 'lunas']);
+            $table->enum('status', ['sedang_berjalan', 'belum_lunas', 'lunas']);
 
             $table->timestamps();
             $table->softDeletes();
@@ -44,3 +44,4 @@ class CreatePinjamanTable extends Migration
         Schema::dropIfExists('pinjaman');
     }
 }
+        

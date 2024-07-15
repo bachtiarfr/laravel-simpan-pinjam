@@ -14,7 +14,7 @@ class SimpananExports implements FromView, ShouldAutoSize
 {
     public function view(): View
     {
-        return view('ketua.report.simpanan_excel', [
+        return view('direkturreport.simpanan_excel', [
             'simpanan' => Simpanan::orderBy('created_at')->get()
         ]);
     }
