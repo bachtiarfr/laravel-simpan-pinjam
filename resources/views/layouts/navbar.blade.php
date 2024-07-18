@@ -49,10 +49,10 @@
                 </li> --}}
 
 
-                {{-- Sidebar Admin --}}
-            @elsecan('isAdmin')
+                {{-- Sidebar Pegawai --}}
+            @elsecan('isPegawai')
                 <li class="nav-item">
-                    <a href="{{ route('dashboard.admin') }}" class="nav-link">
+                    <a href="{{ route('dashboard.pegawai') }}" class="nav-link">
                         <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
                         <span>Dashboard</span>
                     </a>
@@ -76,8 +76,24 @@
                             <li class="nav-item {{ Request::route()->getName() == 'user.index' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('user.index') }}"><span>Data User</span></a>
                             </li>
+                            <li
+                                class="nav-item {{ Request::route()->getName() == 'show.direktur.index' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('show.direktur.index') }}"><span>Data
+                                        Direktur</span></a>
+                            </li>
+                            <li class="nav-item {{ Request::route()->getName() == 'show.pegawai.index' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('show.pegawai.index') }}"><span>Data
+                                        Pegawai</span></a>
+                            </li>
                             <li class="nav-item {{ Request::route()->getName() == 'user.create' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('user.create') }}"><span>Tambah User</span></a>
+                            </li>
+                            <li class="nav-item {{ Request::route()->getName() == 'direktur.create' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('direktur.create') }}"><span>Tambah
+                                        Direktur</span></a>
+                            </li>
+                            <li class="nav-item {{ Request::route()->getName() == 'pegawai.create' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('pegawai.create') }}"><span>Tambah Pegawai</span></a>
                             </li>
                         </ul>
                     </div>
@@ -114,17 +130,17 @@
                         </span>
                         <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                     </span>
-                    <div class="multi-level {{ Request::route()->getName() == 'admin.show.pinjaman' || Request::route()->getName() == 'admin.create.pinjaman' ? 'show' : '' }} collapse"
+                    <div class="multi-level {{ Request::route()->getName() == 'pegawai.show.pinjaman' || Request::route()->getName() == 'pegawai.create.pinjaman' ? 'show' : '' }} collapse"
                         role="list" id="pinjaman-app" aria-expanded="false">
                         <ul class="flex-column nav">
                             <li
-                                class="nav-item {{ Request::route()->getName() == 'admin.show.pinjaman' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('admin.show.pinjaman') }}"><span>Data
+                                class="nav-item {{ Request::route()->getName() == 'pegawai.show.pinjaman' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('pegawai.show.pinjaman') }}"><span>Data
                                         Pinjaman</span></a>
                             </li>
                             <li
-                                class="nav-item {{ Request::route()->getName() == 'admin.create.pinjaman' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('admin.create.pinjaman') }}"><span>Tambah
+                                class="nav-item {{ Request::route()->getName() == 'pegawai.create.pinjaman' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('pegawai.create.pinjaman') }}"><span>Tambah
                                         Pinjaman</span></a>
                             </li>
                         </ul>

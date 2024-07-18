@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit User')
+@section('title', 'Tambah User')
 
 @section('content')
 
@@ -20,88 +20,66 @@
                                     </svg>
                                 </a>
                             </li>
-
-                            @can('isDirektur')
-                                <li class="breadcrumb-item"><a href="../">Direktur</a></li>
-                            @elsecan('isPegawai')
-                                <li class="breadcrumb-item"><a href="../">Pegawai</a></li>
-                            @elsecan('isKelompok')
-                                <li class="breadcrumb-item"><a href="../">Anggota</a></li>
-                            @endcan
-
-                            <li class="breadcrumb-item"><a href="../kelompok">Kelompok</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                            <li class="breadcrumb-item"><a href="../">Pegawai</a></li>
+                            <li class="breadcrumb-item"><a href="../user">User</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Tambah User</li>
                         </ol>
                     </nav>
-                    <h2 class="h4">Edit User</h2>
-                    <p class="mb-0">Ubah data user.</p>
+                    <h2 class="h4">Tambah Direktur</h2>
+                    <p class="mb-0">Menambahkan akun direktur baru.</p>
                 </div>
-            </div>
-            <div class="card components-section border-0 shadow">
-                <div class="card-body">
-                    <form action="{{ route('user.update', $user->id) }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="row mb-4">
 
-                            <div class="col-sm-6">
-                                <!-- Form -->
-                                <div class="mb-4">
-                                    <label for="name">Nama Lengkap</label>
+            </div>
+            <div class="card border-light components-section shadow-sm">
+                <div class="card-body">
+                    <form action="{{ route('direktur.store') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row mb-4">
+                            <div class="col-lg-5 col-sm-6">
+
+                                <div class="mb-3">
+                                    <label for="nama_user">Nama Lengkap</label>
                                     <input type="text"
-                                        class="form-control {{ $errors->first('name') ? 'is-invalid' : '' }}" id="name"
-                                        name="name" value="{{ $user->name }}">
+                                        class="form-control {{ $errors->first('nama_user') ? 'is-invalid' : '' }}"
+                                        id="nama_user" name="nama_user" value="{{ old('nama_user') }}">
                                     <div class="invalid-feedback">
-                                        {{ $errors->first('name') }}
+                                        {{ $errors->first('nama_user') }}
                                     </div>
                                 </div>
 
-                                <div class="mb-4">
+                                <div class="mb-3">
                                     <label for="email">Email</label>
-                                    <input type="text"
+                                    <input type="email"
                                         class="form-control {{ $errors->first('email') ? 'is-invalid' : '' }}"
-                                        id="email" name="email" value="{{ $user->email }}">
+                                        id="email" name="email" value="{{ old('email') }}">
                                     <div class="invalid-feedback">
                                         {{ $errors->first('email') }}
                                     </div>
                                 </div>
 
-
-                                <div class="mb-4">
-                                    <label>Roles</label>
-                                    <select name="roles" required class="form-control">
-                                        <option value="{{ $user->roles }}">Biarkan default jika tidak diubah</option>
-                                        <option value="admin">Admin</option>
-                                        <option value="ketua">Ketua</option>
-                                    </select>
-                                </div>
-
-                                <!-- End of Form -->
-                            </div>
-
-                            <div class="col-sm-6">
-                                <!-- Form -->
-                                <div class="mb-4">
+                                <div class="mb-3">
                                     <label for="password">Password</label>
                                     <input type="password"
                                         class="form-control {{ $errors->first('password') ? 'is-invalid' : '' }}"
-                                        name="password" id="password" value="" placeholder="Password">
+                                        name="password" id="password" value="{{ old('password') }}" placeholder="Password">
                                     <div class="invalid-feedback">
                                         {{ $errors->first('password') }}
                                     </div>
                                 </div>
-                                <div class="mb-4">
+
+                                <div class="mb-3">
                                     <label for="password">Konfirmasi Password</label>
                                     <input type="password"
                                         class="form-control {{ $errors->first('konfirmasi_password') ? 'is-invalid' : '' }}"
-                                        name="konfirmasi_password" id="password" value=""
-                                        placeholder="Konfirmasi Password">
+                                        name="konfirmasi_password" id="password" value="{{ old('konfirmasi_password') }}"
+                                        placeholder="Password">
                                     <div class="invalid-feedback">
                                         {{ $errors->first('konfirmasi_password') }}
                                     </div>
                                 </div>
-                                <!-- End of Form -->
                             </div>
+
+
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRolesToUsers extends Migration
+class Direktur extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddRolesToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('roles', ['pegawai', 'direktur', 'kelompok'])->default('kelompok')->after('password');
+        Schema::create('direktur', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_direktur');
+            $table->integer('user_id');
+            $table->string('email');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddRolesToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('direktur');
     }
 }
