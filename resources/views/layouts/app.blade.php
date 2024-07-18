@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title> @yield('title') </title>
-    <link rel="shortcut icon" href="{{asset('favicon.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -32,7 +32,7 @@
         </div>
     </nav>
 
-    <div class="container-fluid bg-soft">
+    <div class="container-fluid vh-100 bg-soft">
         <div class="row">
             <div class="col-12">
 

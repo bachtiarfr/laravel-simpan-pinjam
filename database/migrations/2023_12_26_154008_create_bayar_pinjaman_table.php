@@ -35,6 +35,6 @@ class CreateBayarPinjamanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bayar_pinjamen');
+        Schema::dropIfExists('bayar_pinjaman');
     }
 }

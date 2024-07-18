@@ -26,7 +26,7 @@ class RedirectIfAuthenticated
                     return redirect('admin');
                     break;
                 case 'ketua':
-                    return redirect('ketua');
+                    return redirect('direktur');
                     break;
                 default:
                     return redirect('/');
