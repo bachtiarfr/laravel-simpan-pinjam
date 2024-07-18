@@ -8,7 +8,7 @@ use App\User;
 use App\Rules\UserOldPassword;
 use Illuminate\Support\Facades\Hash;
 
-class AdminDashboardController extends Controller
+class PegawaiDashboardController extends Controller
 {
     public function index()
     {

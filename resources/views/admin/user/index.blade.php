@@ -34,12 +34,28 @@
                                     </svg>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="../">Admin</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">User</li>
+                            <li class="breadcrumb-item"><a href="../pegawai">Pegawai</a></li>
+
+                            @if (Route::is('user.index'))
+                                <li class="breadcrumb-item active" aria-current="page">User</li>
+                            @elseif (Route::is('show.direktur.index'))
+                                <li class="breadcrumb-item active" aria-current="page">Direktur</li>
+                            @elseif (Route::is('show.pegawai.index'))
+                                <li class="breadcrumb-item active" aria-current="page">Pegawai</li>
+                            @endif
                         </ol>
                     </nav>
-                    <h2 class="h4">User</h2>
-                    <p class="mb-0">Data user yang telah terdaftar.</p>
+
+                    @if (Route::is('user.index'))
+                        <h2 class="h4">User</h2>
+                        <p class="mb-0">Data user yang telah terdaftar.</p>
+                    @elseif (Route::is('show.direktur.index'))
+                        <h2 class="h4">Direktur</h2>
+                        <p class="mb-0">Data direktur yang telah terdaftar.</p>
+                    @elseif (Route::is('show.admin.index'))
+                        <h2 class="h4">Admin</h2>
+                        <p class="mb-0">Data admin yang telah terdaftar.</p>
+                    @endif
                 </div>
             </div>
             <div class="card border-light components-section shadow-sm">

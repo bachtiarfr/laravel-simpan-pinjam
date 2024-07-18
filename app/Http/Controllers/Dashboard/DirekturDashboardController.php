@@ -23,6 +23,6 @@ class DirekturDashboardController extends Controller
             'terverifikasi'     => DokumenAdministrasi::all()->where('status_persetujuan', 'disetujui')->count(),
         ];
 
-        return view('ketua.dashboard.index', $data);
+        return view('direktur.dashboard.index', $data);
     }
 }

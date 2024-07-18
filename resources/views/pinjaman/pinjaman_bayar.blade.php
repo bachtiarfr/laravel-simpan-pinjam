@@ -23,8 +23,8 @@
 
                             @can('isDirektur')
                                 <li class="breadcrumb-item"><a href="../">Direktur</a></li>
-                            @elsecan('isAdmin')
-                                <li class="breadcrumb-item"><a href="../">Admin</a></li>
+                            @elsecan('isPegawai')
+                                <li class="breadcrumb-item"><a href="../">Pegawai</a></li>
                             @elsecan('isKelompok')
                                 <li class="breadcrumb-item"><a href="../">Anggota</a></li>
                             @endcan
@@ -112,7 +112,7 @@
                                         <td>{{ $data->keterangan }}</td>
                                         <td>
                                             @if ($data->tanggal_bayar == null)
-                                                @can('isAdmin')
+                                                @can('isPegawai')
                                                     <a href="{{ route('pinjaman.bayar.detail', ['id' => $data_pinjaman->id, 'bayarpinjamid' => $data->id]) }}"
                                                         class="btn btn-sm btn-primary">Bayar</a>
                                                 @endcan
