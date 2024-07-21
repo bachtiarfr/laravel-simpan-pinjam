@@ -50,7 +50,7 @@
 
 
                 {{-- Sidebar Pegawai --}}
-            @elsecan('isPegawai')
+            @elsecan('isAdmin')
                 <li class="nav-item">
                     <a href="{{ route('dashboard.pegawai') }}" class="nav-link">
                         <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
@@ -62,7 +62,7 @@
                         data-toggle="collapse" data-target="#submenu-app-user">
                         <span>
                             <span class="sidebar-icon"><span class="fas fa-user"></span></span>
-                            User
+                            Data Master
                         </span>
                         <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                     </span>
@@ -73,27 +73,14 @@
                         : '' }} collapse"
                         role="list" id="submenu-app-user" aria-expanded="false">
                         <ul class="flex-column nav">
-                            <li class="nav-item {{ Request::route()->getName() == 'user.index' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('user.index') }}"><span>Data User</span></a>
+                            <li class="nav-item {{ Request::route()->getName() == 'show.user' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('show.user') }}"><span>Data User</span></a>
                             </li>
-                            <li
-                                class="nav-item {{ Request::route()->getName() == 'show.direktur.index' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('show.direktur.index') }}"><span>Data
-                                        Direktur</span></a>
+                            <li class="nav-item {{ Request::route()->getName() == 'show.pegawai' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('show.pegawai') }}"><span>Data Pegawai</span></a>
                             </li>
-                            <li class="nav-item {{ Request::route()->getName() == 'show.pegawai.index' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('show.pegawai.index') }}"><span>Data
-                                        Pegawai</span></a>
-                            </li>
-                            <li class="nav-item {{ Request::route()->getName() == 'user.create' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('user.create') }}"><span>Tambah User</span></a>
-                            </li>
-                            <li class="nav-item {{ Request::route()->getName() == 'direktur.create' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('direktur.create') }}"><span>Tambah
-                                        Direktur</span></a>
-                            </li>
-                            <li class="nav-item {{ Request::route()->getName() == 'pegawai.create' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('pegawai.create') }}"><span>Tambah Pegawai</span></a>
+                            <li class="nav-item {{ Request::route()->getName() == 'show.direktur' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('show.direktur') }}"><span>Data Direktur</span></a>
                             </li>
                         </ul>
                     </div>
@@ -103,7 +90,7 @@
                         data-toggle="collapse" data-target="#submenu-app-kelompok">
                         <span>
                             <span class="sidebar-icon"><span class="fas fa-users"></span></span>
-                            Kelompok
+                            Data Anggota
                         </span>
                         <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                     </span>
@@ -111,12 +98,11 @@
                     <div class="multi-level {{ Request::route()->getName() == 'kelompok.index' ? 'show' : '' }} collapse"
                         role="list" id="submenu-app-kelompok" aria-expanded="false">
                         <ul class="flex-column nav">
-                            <li class="nav-item {{ Request::route()->getName() == 'kelompok.index' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('kelompok.index') }}"><span>Data
-                                        Kelompok</span></a>
+                            <li class="nav-item {{ Request::route()->getName() == 'show.uep.index' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('show.spp.index') }}"><span>Kelompok UEP</span></a>
                             </li>
-                            <li class="nav-item {{ Request::route()->getName() == 'kelompok.create' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('kelompok.create') }}"><span>Tambah Kelompok</span></a>
+                            <li class="nav-item {{ Request::route()->getName() == 'show.spp.index' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('show.spp.index') }}"><span>Kelompok SPP</span></a>
                             </li>
                         </ul>
                     </div>
@@ -177,16 +163,28 @@
                         <ul class="flex-column nav">
                             <li
                                 class="nav-item {{ Request::route()->getName() == 'pengajuan-kelompok' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('direktur.kelompok.index') }}"><span>Data
+                                <a class="nav-link" href="{{ route('pengajuan.kelompok') }}"><span>Pengajuan
                                         Kelompok</span></a>
                             </li>
                             <li
-                                class="nav-item {{ Request::route()->getName() == 'pengajuan-kelompok' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('pengajuan-kelompok.index') }}"><span>Pengajuan
-                                        Kelompok</span></a>
+                                class="nav-item {{ Request::route()->getName() == 'direktur.show.uep.index' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('direktur.show.uep.index') }}"><span>Kelompok
+                                        UEP</span></a>
+                            </li>
+                            <li
+                                class="nav-item {{ Request::route()->getName() == 'direktur.show.spp.index' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('direktur.show.spp.index') }}"><span>Kelompok
+                                        SPP</span></a>
                             </li>
                         </ul>
                     </div>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('export.pinjaman') }}" class="nav-link">
+                        <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
+                        <span>Export Laporan</span>
+                    </a>
                 </li>
             @endcan
         </ul>

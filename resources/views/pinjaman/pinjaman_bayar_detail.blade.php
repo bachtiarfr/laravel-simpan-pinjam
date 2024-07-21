@@ -39,7 +39,7 @@
 
                             @can('isDirektur')
                                 <li class="breadcrumb-item"><a href="../">Direktur</a></li>
-                            @elsecan('isPegawai')
+                            @elsecan('isAdmin')
                                 <li class="breadcrumb-item"><a href="../">Pegawai</a></li>
                             @elsecan('isKelompok')
                                 <li class="breadcrumb-item"><a href="../">Anggota</a></li>

@@ -46,7 +46,6 @@ class PinjamanController extends Controller
                 </button>
                 <div class="dropdown-menu" aria-labelledby="action' .  $item->id . '">
                     <a class="dropdown-item" href="' . route('pinjaman.bayar', $item->id) . '"><span class="far fa-money-bill-alt mr-2"></span>Angsuran</a>
-                    <a class="dropdown-item" href="' . route('pinjaman.edit', $item->id) . '"><span class="fas fa-eye mr-2"></span>Detail</a>
                     <form action="' . route('pinjaman.destroy', $item->id) . '" method="POST">
                                         ' . method_field('delete') . csrf_field() . '
                                         <button type="submit" class="dropdown-item text-danger">

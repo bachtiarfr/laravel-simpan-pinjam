@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Data Anggota')
+@section('title', 'Laporan Pinjaman')
 
 @section('content')
 
@@ -54,24 +54,34 @@
                         @elsecan('isKelompok')
                             <li class="breadcrumb-item"><a href="../">Anggota</a></li>
                         @endcan
-                        <li class="breadcrumb-item active text-primary" aria-current="page">Kelompok</li>
+                        <li class="breadcrumb-item active text-primary" aria-current="page">Laporan Pinjaman</li>
                     </ol>
                 </nav>
-                <h2 class="h4 text-primary">Kelompok</h2>
-                <p class="text-secondary mb-0">Daftar semua kelompok yang dapat mengajukan peminjaman.</p>
+                <h2 class="h4 text-primary">Laporan Pinjaman Dana BUMDESMA GIRISUBO</h2>
+                <p class="text-secondary mb-0">Daftar semua pinjaman anggota kelompok.</p>
+            </div>
+
+            <!-- Export to PDF Button -->
+            <div>
+                <a href="{{ route('report.exportPdf') }}" class="btn btn-primary">
+                    Export to PDF
+                </a>
             </div>
         </div>
+
         <div class="card border-light shadow-sm">
             <div class="card-body">
-                <table class="table-hover table-striped table" id="ShowKelompokData">
+                <table class="table-hover table-striped table" id="ShowReportData">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>No. KTP</th>
-                            <th>Nama</th>
-                            <th>Telepon</th>
+                            <th>Tanggal</th>
+                            <th>Nama Kelompok</th>
                             <th>Jenis Kelompok</th>
-                            <th>Action</th>
+                            <th>Nominal</th>
+                            <th>Jangka Waktu</th>
+                            <th>Status</th>
+                            <th>Angsuran Ke</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,42 +96,52 @@
 
 @push('scripts')
     <script>
-        // AJAX DataTable
-        var datatable = $('#ShowKelompokData').DataTable({
-            processing: true,
-            serverSide: true,
-            ordering: true,
-            ajax: {
-                url: '{!! url()->current() !!}',
-            },
-            columns: [{
-                    data: 'id',
-                    name: 'id'
+        $(document).ready(function() {
+            // AJAX DataTable
+            $('#ShowReportData').DataTable({
+                processing: true,
+                serverSide: true,
+                ordering: true,
+                ajax: {
+                    url: '{!! url()->current() !!}',
                 },
-                {
-                    data: 'no_ktp',
-                    name: 'no_ktp'
-                },
-                {
-                    data: 'nama_kelompok',
-                    name: 'nama_kelompok'
-                },
-                {
-                    data: 'telepon',
-                    name: 'telepon'
-                },
-                {
-                    data: 'jenis_kelompok',
-                    name: 'jenis_kelompok'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false,
-                    width: '20%'
-                },
-            ]
+                columns: [{
+                        data: 'row_number',
+                        name: 'row_number',
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at',
+                    },
+                    {
+                        data: 'nama_kelompok',
+                        name: 'nama_kelompok',
+                    },
+                    {
+                        data: 'jenis_kelompok',
+                        name: 'jenis_kelompok',
+                    },
+                    {
+                        data: 'nominal',
+                        name: 'nominal',
+                    },
+                    {
+                        data: 'jangka_waktu',
+                        name: 'jangka_waktu',
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                    },
+                    {
+                        data: 'angsuran_ke',
+                        name: 'angsuran_ke',
+                        orderable: false,
+                        searchable: false,
+                        width: '15%'
+                    }
+                ]
+            });
         });
     </script>
 @endpush

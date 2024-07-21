@@ -6,17 +6,19 @@ use App\AnggotaKelompok;
 use App\Http\Controllers\Controller;
 use App\JenisKelompok;
 use App\User;
-use App\DokumenAdministrasi;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class KelompokController extends Controller
 {
 
-    public function index()
+    public function showUEP()
     {
         if (request()->ajax()) {
-            $query = AnggotaKelompok::select('anggota_kelompok.id', 'anggota_kelompok.no_ktp', 'anggota_kelompok.nama_kelompok', 'anggota_kelompok.alamat', 'anggota_kelompok.telepon', 'anggota_kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok')->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'anggota_kelompok.jenis_kelompok_id');            
+            $query = AnggotaKelompok::select('anggota_kelompok.id', 'anggota_kelompok.no_ktp', 'anggota_kelompok.nama_kelompok', 'anggota_kelompok.alamat', 'anggota_kelompok.telepon', 'anggota_kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok', 'dokumen_administrasi.status_persetujuan')
+            ->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'anggota_kelompok.jenis_kelompok_id')
+            ->join('dokumen_administrasi', 'anggota_kelompok.user_id', '=', 'dokumen_administrasi.user_id')
+            ->where('jenis_kelompok_id', '=', 1);
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
@@ -31,8 +33,8 @@ class KelompokController extends Controller
                                         Aksi
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="action' .  $item->id . '">
-                                    <a class="dropdown-item" href="' . route('kelompok.edit', $item->id) . '">
-                                        Sunting
+                                    <a class="dropdown-item" href="' . route('kelompok.detail', $item->id) . '">
+                                        Detail
                                     </a>
                                     <form action="' . route('kelompok.destroy', $item->id) . '" method="POST">
                                         ' . method_field('delete') . csrf_field() . '
@@ -43,7 +45,7 @@ class KelompokController extends Controller
                                 </div>
                             </div>
                     </div>' : '
-                    <a class="btn btn-secondary mr-1 mb-1 btn-sm" href="'. route('kelompok.approval', $item->id) .'"><span>Detail</span></a>
+                    <a class="btn btn-secondary mr-1 mb-1 btn-sm" href=""><span>Detail</span></a>
                     ';
                 })
                 ->rawColumns(['action'])
@@ -52,6 +54,48 @@ class KelompokController extends Controller
 
         return view('kelompok.kelompok_index');
     }
+
+    public function showSPP()
+    {
+        if (request()->ajax()) {
+            $query = AnggotaKelompok::select('anggota_kelompok.id', 'anggota_kelompok.no_ktp', 'anggota_kelompok.nama_kelompok', 'anggota_kelompok.alamat', 'anggota_kelompok.telepon', 'anggota_kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok', 'dokumen_administrasi.status_persetujuan')
+            ->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'anggota_kelompok.jenis_kelompok_id')
+            ->join('dokumen_administrasi', 'anggota_kelompok.user_id', '=', 'dokumen_administrasi.user_id')
+            ->where('jenis_kelompok_id', '=', 2);            
+
+            return DataTables::of($query)
+                ->addColumn('action', function ($item) {
+                    return 
+                        '<form action="' . route('kelompok.destroy', $item->id) . '" method="POST">
+                        ' . method_field('delete') . csrf_field() . '
+                        <div class="btn-group">
+                        <a class="btn btn-primary mr-1 mb-1 btn-sm" href="' . route('kelompok.detail', $item->id) . '">
+                        Detail
+                        </a>
+                        <button class="btn btn-primary mr-1 mb-1 btn-sm" type="submit">
+                            Hapus
+                        </button>
+                        </div>
+                        </form>';
+                })
+                ->rawColumns(['action'])
+                ->make();
+        }
+
+        return view('kelompok.kelompok_index');
+    }
+
+    public function detail($k)
+    {
+        $kelompok = AnggotaKelompok::select('anggota_kelompok.id', 'anggota_kelompok.no_ktp', 'anggota_kelompok.nama_kelompok', 'anggota_kelompok.alamat', 'anggota_kelompok.telepon', 'anggota_kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok', 'dokumen_administrasi.status_persetujuan', 'dokumen_administrasi.path', 'users.nama_user AS nama_ketua_kelompok')
+        ->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'anggota_kelompok.jenis_kelompok_id')
+        ->join('dokumen_administrasi', 'anggota_kelompok.user_id', '=', 'dokumen_administrasi.user_id')
+        ->join('users', 'anggota_kelompok.user_id', '=', 'users.id')
+        ->where('anggota_kelompok.id', '=', $k)->first();
+
+        return view('kelompok.kelompok_show', compact('kelompok'));
+    }
+
 
     public function create()
     {
@@ -95,33 +139,6 @@ class KelompokController extends Controller
         return redirect()->route('kelompok.index')->with(['status' => 'Data kelompok berhasil ditambahkan']);
     }
 
-    public function show(AnggotaKelompok $kelompok)
-    {
-        //
-    }
-
-    public function edit($k)
-    {
-        $kelompok = AnggotaKelompok::Find($k);
-        return view('kelompok.kelompok_show', compact('kelompok'));
-    }
-
-    public function update(Request $request, $k)
-    {
-        $request->validate([
-            'no_ktp' => 'required|digits:16|unique:kelompok,no_ktp,' . $k,
-            'nama_kelompok' => 'required',
-            'alamat' => 'required',
-            'telepon' => 'required',
-        ]);
-
-        $kelompok = AnggotaKelompok::findOrFail($k);
-        $data = $request->all();
-
-        $kelompok->update($data);
-        return redirect()->route('kelompok.index')->with(['status' => 'Data Berhasil Diubah']);
-    }
-
     public function destroy($k)
     {
         $kelompok = AnggotaKelompok::findOrFail($k);
@@ -134,4 +151,10 @@ class KelompokController extends Controller
     {
         return view('kelompok.pengajuan_kelompok');
     }
+
+    
+
+
+
+
 }

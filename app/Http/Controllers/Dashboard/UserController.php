@@ -14,24 +14,32 @@ use Yajra\DataTables\Facades\DataTables;
 class UserController extends Controller
 {
 
-    public function index()
+    public function showUser()
     {
         if (request()->ajax()) {
             $query = User::query()->where('roles', '=', 'kelompok');
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
-                    return   '  <form action="' . route('user.destroy', $item->id) . '" method="POST">
+                    return 
+                    '
+                            <form action="' . route('kelompok.destroy', $item->id) . '" method="POST">
                                     ' . method_field('delete') . csrf_field() . '
-                                    <button type="submit" class="dropdown-item text-danger">
-                                    <span class="fas fa-trash-alt mr-2"></span>Hapus</a>
+                                    <div class="btn-group">
+                                    <a class="btn btn-primary mr-1 mb-1 btn-sm" href="' . route('user.detail', $item->id) . '">
+                                    Detail
+                                    </a>
+                                    <button class="btn btn-primary mr-1 mb-1 btn-sm" type="submit">
+                                        Hapus
                                     </button>
-                                </form>';
+                                    </div>
+                            </form>
+                    ';
                 })
                 ->editColumn('roles', function ($item) {
-                    return $item->roles == 'admin'
-                        ? '<span class="text-warning">' . $item->roles . '</span>'
-                        : '<span class="text-success">' . $item->roles . '</span>';
+                    return $item->roles == 'kelompok'
+                        ? '<span>' . 'anggota' . '</span>'
+                        : '<span>' . $item->roles . '</span>';
                 })
                 ->rawColumns(['action', 'roles'])
                 ->make();
@@ -39,6 +47,71 @@ class UserController extends Controller
 
         return view('admin.user.index');
     }
+
+    public function showPegawai()
+    {
+        if (request()->ajax()) {
+            $query = User::query()->where('roles', '=', 'pegawai');
+
+            return DataTables::of($query)
+                ->addColumn('action', function ($item) {
+                    return 
+                    '
+                            <form action="' . route('user.destroy', $item->id) . '" method="POST">
+                                    ' . method_field('delete') . csrf_field() . '
+                                    <div class="btn-group">
+                                    <a class="btn btn-primary mr-1 mb-1 btn-sm" href="' . route('user.detail', $item->id) . '">
+                                    Detail
+                                    </a>
+                                    <button class="btn btn-primary mr-1 mb-1 btn-sm" type="submit">
+                                        Hapus
+                                    </button>
+                                    </div>
+                            </form>
+                    ';
+                })
+                ->editColumn('roles', function ($item) {
+                    return '<span class="text-warning">' . $item->roles . '</span>';
+                })
+                ->rawColumns(['action', 'roles'])
+                ->make();
+        }
+
+        return view('admin.user.index');
+    }
+
+    public function showDirektur()
+    {
+        if (request()->ajax()) {
+            $query = User::query()->where('roles', '=', 'direktur');
+
+            return DataTables::of($query)
+                ->addColumn('action', function ($item) {
+                    return 
+                    '
+                            <form action="' . route('user.destroy', $item->id) . '" method="POST">
+                                    ' . method_field('delete') . csrf_field() . '
+                                    <div class="btn-group">
+                                    <a class="btn btn-primary mr-1 mb-1 btn-sm" href="' . route('user.detail', $item->id) . '">
+                                    Detail
+                                    </a>
+                                    <button class="btn btn-primary mr-1 mb-1 btn-sm" type="submit">
+                                        Hapus
+                                    </button>
+                                    </div>
+                            </form>
+                    ';
+                })
+                ->editColumn('roles', function ($item) {
+                    return '<span class="text-warning">' . $item->roles . '</span>';
+                })
+                ->rawColumns(['action', 'roles'])
+                ->make();
+        }
+
+        return view('admin.user.index');
+    }
+
 
     public function create()
     {
@@ -134,9 +207,10 @@ class UserController extends Controller
     }
 
 
-    public function show($id)
+    public function detail($id)
     {
-        //
+        $user = User::select('*')->where('id', '=', $id)->first();
+        return view('admin.user.show', compact('user'));
     }
 
     public function edit($id)
@@ -177,32 +251,6 @@ class UserController extends Controller
         return redirect()->route('user.index')->with(['status' => 'Data User ' . $user->name . ' Berhasil Dihapus']);
     }
 
-    public function showDirektur() 
-    {
-        if (request()->ajax()) {
-            $query = User::query()->where('roles', '=', 'direktur');
-
-            return DataTables::of($query)
-                ->addColumn('action', function ($item) {
-                    return   ' <form action="' . route('direktur.delete', $item->id) . '" method="POST">
-                    ' . method_field('DELETE') . csrf_field() . '
-                    <button type="submit" class="dropdown-item text-danger">
-                        <span class="fas fa-trash-alt mr-2"></span>Hapus
-                    </button>
-                </form>';
-                })
-                ->editColumn('roles', function ($item) {
-                    return $item->roles == 'admin'
-                        ? '<span class="text-warning">' . $item->roles . '</span>'
-                        : '<span class="text-success">' . $item->roles . '</span>';
-                })
-                ->rawColumns(['action', 'roles'])
-                ->make();
-        }
-
-        return view('admin.user.index');
-    }
-
     public function addPegawai()
     {
         return view('admin.user.pegawai_create');
@@ -211,33 +259,6 @@ class UserController extends Controller
     public function addDirektur()
     {
         return view('admin.user.direktur_create');
-    }
-
-
-    public function showPegawai() 
-    {
-        if (request()->ajax()) {
-            $query = User::query()->where('roles', '=', 'pegawai');
-
-            return DataTables::of($query)
-                ->addColumn('action', function ($item) {
-                    return   '  <form action="' . route('pegawai.delete', $item->id) . '" method="POST">
-                                    ' . method_field('delete') . csrf_field() . '
-                                    <button type="submit" class="dropdown-item text-danger">
-                                    <span class="fas fa-trash-alt mr-2"></span>Hapus</a>
-                                    </button>
-                                </form>';
-                })
-                ->editColumn('roles', function ($item) {
-                    return $item->roles == 'admin'
-                        ? '<span class="text-warning">' . $item->roles . '</span>'
-                        : '<span class="text-success">' . $item->roles . '</span>';
-                })
-                ->rawColumns(['action', 'roles'])
-                ->make();
-        }
-
-        return view('admin.user.index');
     }
 
     public function pegawaiDelete($id)

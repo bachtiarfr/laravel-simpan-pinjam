@@ -18,75 +18,74 @@
         @endpush
     @endif
 
-    <div class="row">
-        <div class="col-12 mb-4">
-            <div class="d-flex justify-content-between flex-md-nowrap align-items-center flex-wrap py-4">
-                <div class="d-block mb-md-0 mb-4">
-                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-                        <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-                            <li class="breadcrumb-item">
-                                <a href="#">
-                                    <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                                        </path>
-                                    </svg>
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item"><a href="../pegawai">Pegawai</a></li>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0">
+                        <li class="breadcrumb-item">
+                            <a href="#">
+                                <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                                    </path>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="../admin">Admin</a></li>
+                        @if (Route::is('show.user'))
+                            <li class="breadcrumb-item active text-primary" aria-current="page">User</li>
+                        @else
+                            <li class="breadcrumb-item active text-primary" aria-current="page">Pegawai</li>
+                        @endif
+                    </ol>
+                </nav>
 
-                            @if (Route::is('user.index'))
-                                <li class="breadcrumb-item active" aria-current="page">User</li>
-                            @elseif (Route::is('show.direktur.index'))
-                                <li class="breadcrumb-item active" aria-current="page">Direktur</li>
-                            @elseif (Route::is('show.pegawai.index'))
-                                <li class="breadcrumb-item active" aria-current="page">Pegawai</li>
-                            @endif
-                        </ol>
-                    </nav>
-
-                    @if (Route::is('user.index'))
-                        <h2 class="h4">User</h2>
-                        <p class="mb-0">Data user yang telah terdaftar.</p>
-                    @elseif (Route::is('show.direktur.index'))
-                        <h2 class="h4">Direktur</h2>
-                        <p class="mb-0">Data direktur yang telah terdaftar.</p>
-                    @elseif (Route::is('show.admin.index'))
-                        <h2 class="h4">Admin</h2>
-                        <p class="mb-0">Data admin yang telah terdaftar.</p>
-                    @endif
-                </div>
+                @if (Route::is('show.user'))
+                    <h2 class="h4 text-primary">User</h2>
+                    <p class="text-secondary mb-0">Data user yang telah terdaftar.</p>
+                @else
+                    <h2 class="h4 text-primary">Pegawai</h2>
+                    <p class="text-secondary mb-0">Data pegawai yang telah terdaftar.</p>
+                @endif
             </div>
-            <div class="card border-light components-section shadow-sm">
-                <div class="card-body">
-                    <div class="row">
-
-                        <table class="table-hover table" id="userTable">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Lengkap</th>
-                                    <th>Email</th>
-                                    <th>Roles</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-
-                            </tbody>
-                        </table>
-                        <footer class="footer section py-2">
-
-                    </div>
-
-                </div>
+        </div>
+        <div class="card border-light shadow-sm">
+            <div class="card-body">
+                <table class="table-hover table-striped table" id="userTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Lengkap</th>
+                            <th>Email</th>
+                            <th>Roles</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
+            <footer class="footer section py-2"></footer>
+        </div>
+        <div class="py-4">
+            @if (Route::is('show.user'))
+                <a href="{{ route('user.create') }}" class="btn btn-primary">Tambah User</a>
+            @endif
+
+            @if (Route::is('show.pegawai'))
+                <a href="{{ route('pegawai.create') }}" class="btn btn-primary">Tambah Pegawai</a>
+            @endif
+
+            @if (Route::is('show.direktur'))
+                <a href="{{ route('direktur.create') }}" class="btn btn-primary">Tambah Direktur</a>
+            @endif
         </div>
     </div>
 
 @endsection
+
 @push('scripts')
     <script>
         // AJAX DataTable
@@ -124,7 +123,6 @@
                     width: '15%'
                 },
             ],
-
         });
     </script>
 @endpush

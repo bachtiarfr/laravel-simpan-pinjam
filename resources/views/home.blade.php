@@ -19,7 +19,7 @@
                             Anda Login Sebagai
                             @can('isDirektur')
                                 <span class="btn btn-success">Ketua</span>
-                            @elsecan('isPegawai')
+                            @elsecan('isAdmin')
                                 <span class="btn btn-info">Admin</span>
                             @endcan
                         </p>
