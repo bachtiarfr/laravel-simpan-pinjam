@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\AnggotaKelompok;
 use App\Direktur;
 use App\Http\Controllers\Controller;
 use App\Pegawai;
@@ -23,7 +24,7 @@ class UserController extends Controller
                 ->addColumn('action', function ($item) {
                     return 
                     '
-                            <form action="' . route('kelompok.destroy', $item->id) . '" method="POST">
+                            <form action="' . route('user.delete', $item->id) . '" method="POST">
                                     ' . method_field('delete') . csrf_field() . '
                                     <div class="btn-group">
                                     <a class="btn btn-primary mr-1 mb-1 btn-sm" href="' . route('user.detail', $item->id) . '">
@@ -57,7 +58,7 @@ class UserController extends Controller
                 ->addColumn('action', function ($item) {
                     return 
                     '
-                            <form action="' . route('user.destroy', $item->id) . '" method="POST">
+                            <form action="' . route('pegawai.delete', $item->id) . '" method="POST">
                                     ' . method_field('delete') . csrf_field() . '
                                     <div class="btn-group">
                                     <a class="btn btn-primary mr-1 mb-1 btn-sm" href="' . route('user.detail', $item->id) . '">
@@ -89,7 +90,7 @@ class UserController extends Controller
                 ->addColumn('action', function ($item) {
                     return 
                     '
-                            <form action="' . route('user.destroy', $item->id) . '" method="POST">
+                            <form action="' . route('direktur.delete', $item->id) . '" method="POST">
                                     ' . method_field('delete') . csrf_field() . '
                                     <div class="btn-group">
                                     <a class="btn btn-primary mr-1 mb-1 btn-sm" href="' . route('user.detail', $item->id) . '">
@@ -127,7 +128,7 @@ class UserController extends Controller
             'email'                 => 'required|email|unique:users',
             'password'              => 'required|min:3',
             'konfirmasi_password'   => 'required|same:password|min:3',
-            'roles'                 => 'nullable|string|in:pegawai,direktur,anggota'
+            'roles'                 => 'nullable|string|in:pegawai,direktur,kelompok'
         ]);
 
         $data = $request->all();
@@ -135,7 +136,7 @@ class UserController extends Controller
 
         User::create($data);
 
-        return redirect()->route('user.index')
+        return redirect()->route('show.user')
             ->with(['status' => 'Data User Berhasil Ditambahkan']);
     }
 
@@ -165,8 +166,8 @@ class UserController extends Controller
             'email' => $data['email']
         ]);
 
-        return redirect()->route('show.direktur.index')
-            ->with(['status' => 'Data Pegawai Berhasil Ditambahkan']);
+        return redirect()->route('show.direktur')
+            ->with(['status' => 'Data Direktur Berhasil Ditambahkan']);
     }
 
 
@@ -202,7 +203,7 @@ class UserController extends Controller
             'no_hp' => $data['no_hp']
         ]);
   
-        return redirect()->route('show.pegawai.index')
+        return redirect()->route('show.pegawai')
             ->with(['status' => 'Data Pegawai Berhasil Ditambahkan']);
     }
 
@@ -248,7 +249,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('user.index')->with(['status' => 'Data User ' . $user->name . ' Berhasil Dihapus']);
+        return redirect()->route('show.user')->with(['status' => 'Data User ' . $user->name . ' Berhasil Dihapus']);
     }
 
     public function addPegawai()
@@ -277,5 +278,15 @@ class UserController extends Controller
         $user->delete();
         $direktur->delete();
         return redirect()->route('show.direktur.index')->with(['status' => 'Data Direktur ' . $user->name . ' Berhasil Dihapus']);
+    }
+
+    public function userDelete($id)
+    {
+        $user = User::findOrFail($id);
+        $kelompok = AnggotaKelompok::where('user_id', '=', $id)->first();
+        $kelompok->delete();
+        $user->delete();
+        
+        return redirect()->route('show.user')->with(['status' => 'Data User ' . $user->name . ' Berhasil Dihapus']);
     }
 }

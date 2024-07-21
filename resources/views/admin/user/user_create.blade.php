@@ -77,7 +77,7 @@
                                         </div>
                                     </div>
 
-                                    <input name="roles" value="user" hidden>
+                                    <input name="roles" value="kelompok" hidden>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Simpan</button>

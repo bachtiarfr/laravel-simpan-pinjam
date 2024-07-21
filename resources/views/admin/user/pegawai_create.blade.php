@@ -60,7 +60,7 @@
                 </div>
                 <div class="card border-light components-section shadow-sm">
                     <div class="card-body">
-                        <form action="{{ route('user.store') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('pegawai.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row mb-4">
                                 <div class="col-lg-5 col-sm-6">

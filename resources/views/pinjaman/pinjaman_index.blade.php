@@ -62,14 +62,6 @@
                         <h2 class="h4">Pinjaman</h2>
                         <p class="mb-0">Daftar semua pinjaman yang diajukan kelompok.</p>
                     </div>
-                    <div class="btn-toolbar mb-md-0 mb-2">
-                        @can('isDirektur')
-                            <div class="btn-group ms-lg-3 ms-2">
-                                <a href="{{ route('pinjaman.pdf') }}" class="btn btn-sm btn-outline-gray-600">Export PDF</a>
-                                <a href="{{ route('pinjaman.excel') }}" class="btn btn-sm btn-outline-gray-600">Export Excel</a>
-                            </div>
-                        @endcan
-                    </div>
                 </div>
 
                 <div class="card border-light components-section shadow-sm">

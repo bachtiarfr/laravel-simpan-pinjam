@@ -31,6 +31,7 @@ class AnggotaKelompokDashboardController extends Controller
             $data = [
                 'total_pinjaman_saat_ini' => 'Rp ' . number_format($pinjaman_saat_ini->sum('total'), 0, ',', '.'),
                 'total_pinjaman' => 'Rp ' . number_format(Pinjaman::all()->where('id_kelompok', '=', $kelompok->id)->sum('total'), 0, ',', '.'),
+                'status_pengajuan' => is_null($status_pengajuan) ? null : $status_pengajuan,
             ];
         }
 

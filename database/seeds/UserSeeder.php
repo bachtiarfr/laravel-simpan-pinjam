@@ -33,23 +33,23 @@ class UserSeeder extends Seeder
          ]);
 
         User::insert([
-            'nama_user' => 'ireng banget wir',
-            'email' => 'jawiricikiwir@gmail.com',
+            'nama_user' => 'ini direktur',
+            'email' => 'inidirektur@gmail.com',
             'password' => bcrypt('jomokbangetwir'),
             'roles' => 'direktur'
         ]);
 
-        $direktur = User::select('*')->where('nama_user', '=', 'ireng banget wir')->where('roles', '=', 'direktur')->first();
+        $direktur = User::select('*')->where('nama_user', '=', 'ini direktur')->where('roles', '=', 'direktur')->first();
 
         Direktur::create([
-            'nama_direktur' => 'ireng banget wir',
+            'nama_direktur' => 'ini direktur',
             'user_id' => $direktur['id'],
-            'email' => 'jawiricikiwir@gmail.com'
+            'email' => 'inidirektur@gmail.com'
         ]);
 
         User::insert([
             'nama_user' => 'ini anggota wir',
-            'email' => 'anggota_icikiwir@gmail.com',
+            'email' => 'inianggota@gmail.com',
             'password' => bcrypt('jomokbangetwir'),
             'roles' => 'kelompok'
         ]);

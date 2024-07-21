@@ -36,8 +36,10 @@
                         <li class="breadcrumb-item"><a href="../admin">Admin</a></li>
                         @if (Route::is('show.user'))
                             <li class="breadcrumb-item active text-primary" aria-current="page">User</li>
-                        @else
+                        @elseif(Route::is('show.pegawai'))
                             <li class="breadcrumb-item active text-primary" aria-current="page">Pegawai</li>
+                        @else
+                            <li class="breadcrumb-item active text-primary" aria-current="page">Direktur</li>
                         @endif
                     </ol>
                 </nav>
@@ -45,9 +47,12 @@
                 @if (Route::is('show.user'))
                     <h2 class="h4 text-primary">User</h2>
                     <p class="text-secondary mb-0">Data user yang telah terdaftar.</p>
-                @else
+                @elseif(Route::is('show.pegawai'))
                     <h2 class="h4 text-primary">Pegawai</h2>
                     <p class="text-secondary mb-0">Data pegawai yang telah terdaftar.</p>
+                @else
+                    <h2 class="h4 text-primary">Direktur</h2>
+                    <p class="text-secondary mb-0">Data direktur yang telah terdaftar.</p>
                 @endif
             </div>
         </div>

@@ -80,6 +80,9 @@
             </div>
             <footer class="footer section py-2"></footer>
         </div>
+        <div class="py-4">
+            <a href="{{ route('kelompok.create') }}" class="btn btn-primary">Tambah Kelompok</a>
+        </div>
     </div>
 
 @endsection

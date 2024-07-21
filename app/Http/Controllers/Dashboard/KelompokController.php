@@ -12,78 +12,119 @@ use Yajra\DataTables\Facades\DataTables;
 class KelompokController extends Controller
 {
 
-    public function showUEP()
-    {
-        if (request()->ajax()) {
-            $query = AnggotaKelompok::select('anggota_kelompok.id', 'anggota_kelompok.no_ktp', 'anggota_kelompok.nama_kelompok', 'anggota_kelompok.alamat', 'anggota_kelompok.telepon', 'anggota_kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok', 'dokumen_administrasi.status_persetujuan')
+    public function showUEP(){
+    if (request()->ajax()) {
+        $query = AnggotaKelompok::select(
+                'anggota_kelompok.id', 
+                'anggota_kelompok.no_ktp', 
+                'anggota_kelompok.nama_kelompok', 
+                'anggota_kelompok.alamat', 
+                'anggota_kelompok.telepon', 
+                'anggota_kelompok.deleted_at', 
+                'jenis_kelompok.name AS jenis_kelompok', 
+                'dokumen_administrasi.status_persetujuan'
+            )
             ->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'anggota_kelompok.jenis_kelompok_id')
             ->join('dokumen_administrasi', 'anggota_kelompok.user_id', '=', 'dokumen_administrasi.user_id')
             ->where('jenis_kelompok_id', '=', 1);
 
-            return DataTables::of($query)
-                ->addColumn('action', function ($item) {
-                    return  $item->status_persetujuan == 'disetujui' ? '
-                        <div class="btn-group">
-                            <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle mr-1 mb-1 btn-sm" 
-                                    type="button" id="action' .  $item->id . '"
-                                        data-toggle="dropdown" 
-                                        aria-haspopup="true"
-                                        aria-expanded="false">
-                                        Aksi
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="action' .  $item->id . '">
-                                    <a class="dropdown-item" href="' . route('kelompok.detail', $item->id) . '">
-                                        Detail
-                                    </a>
-                                    <form action="' . route('kelompok.destroy', $item->id) . '" method="POST">
-                                        ' . method_field('delete') . csrf_field() . '
-                                        <button type="submit" class="dropdown-item text-danger">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                    </div>' : '
-                    <a class="btn btn-secondary mr-1 mb-1 btn-sm" href=""><span>Detail</span></a>
-                    ';
-                })
-                ->rawColumns(['action'])
-                ->make();
+        return DataTables::of($query)
+            ->addColumn('action', function ($item) {
+                $user = auth()->user();
+                $actions = '';
+
+
+                if ($user->roles == 'pegawai') {
+                    $actions .= '<a class="dropdown-item" href="' . route('admin.kelompok.detail', $item->id) . '">Detail</a>';
+                    $actions .= '
+                        <form action="' . route('kelompok.destroy', $item->id) . '" method="POST" style="display:inline;">
+                            ' . method_field('delete') . csrf_field() . '
+                            <button class="dropdown-item" type="submit">Hapus</button>
+                        </form>';
+                }else {
+                    $actions .= '<a class="dropdown-item" href="' . route('direktur.kelompok.detail', $item->id) . '">Detail</a>';
+                }
+
+                return '
+                    <div class="btn-group">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle mr-1 mb-1 btn-sm" 
+                                type="button" id="action' . $item->id . '"
+                                    data-toggle="dropdown" 
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                    Aksi
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="action' . $item->id . '">'
+                            . $actions .
+                            '</div>
+                        </div>
+                    </div>';
+            })
+            ->rawColumns(['action'])
+            ->make();
         }
 
-        return view('kelompok.kelompok_index');
+    return view('kelompok.kelompok_index');
     }
 
     public function showSPP()
     {
         if (request()->ajax()) {
-            $query = AnggotaKelompok::select('anggota_kelompok.id', 'anggota_kelompok.no_ktp', 'anggota_kelompok.nama_kelompok', 'anggota_kelompok.alamat', 'anggota_kelompok.telepon', 'anggota_kelompok.deleted_at', 'jenis_kelompok.name AS jenis_kelompok', 'dokumen_administrasi.status_persetujuan')
-            ->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'anggota_kelompok.jenis_kelompok_id')
-            ->join('dokumen_administrasi', 'anggota_kelompok.user_id', '=', 'dokumen_administrasi.user_id')
-            ->where('jenis_kelompok_id', '=', 2);            
-
-            return DataTables::of($query)
+            $query = AnggotaKelompok::select(
+                    'anggota_kelompok.id', 
+                    'anggota_kelompok.no_ktp', 
+                    'anggota_kelompok.nama_kelompok', 
+                    'anggota_kelompok.alamat', 
+                    'anggota_kelompok.telepon', 
+                    'anggota_kelompok.deleted_at', 
+                    'jenis_kelompok.name AS jenis_kelompok', 
+                    'dokumen_administrasi.status_persetujuan'
+                )
+                ->join('jenis_kelompok', 'jenis_kelompok.id', '=', 'anggota_kelompok.jenis_kelompok_id')
+                ->join('dokumen_administrasi', 'anggota_kelompok.user_id', '=', 'dokumen_administrasi.user_id')
+                ->where('jenis_kelompok_id', '=', 2);
+    
+                return DataTables::of($query)
                 ->addColumn('action', function ($item) {
-                    return 
-                        '<form action="' . route('kelompok.destroy', $item->id) . '" method="POST">
-                        ' . method_field('delete') . csrf_field() . '
+                    $user = auth()->user();
+                    $actions = '';
+    
+    
+                    if ($user->roles == 'pegawai') {
+                        $actions .= '<a class="dropdown-item" href="' . route('admin.kelompok.detail', $item->id) . '">Detail</a>';
+                        $actions .= '
+                            <form action="' . route('kelompok.destroy', $item->id) . '" method="POST" style="display:inline;">
+                                ' . method_field('delete') . csrf_field() . '
+                                <button class="dropdown-item" type="submit">Hapus</button>
+                            </form>';
+                    }else {
+                        $actions .= '<a class="dropdown-item" href="' . route('direktur.kelompok.detail', $item->id) . '">Detail</a>';
+                    }
+    
+                    return '
                         <div class="btn-group">
-                        <a class="btn btn-primary mr-1 mb-1 btn-sm" href="' . route('kelompok.detail', $item->id) . '">
-                        Detail
-                        </a>
-                        <button class="btn btn-primary mr-1 mb-1 btn-sm" type="submit">
-                            Hapus
-                        </button>
-                        </div>
-                        </form>';
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle mr-1 mb-1 btn-sm" 
+                                    type="button" id="action' . $item->id . '"
+                                        data-toggle="dropdown" 
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Aksi
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="action' . $item->id . '">'
+                                . $actions .
+                                '</div>
+                            </div>
+                        </div>';
                 })
                 ->rawColumns(['action'])
                 ->make();
-        }
-
+            }
+    
         return view('kelompok.kelompok_index');
     }
+    
 
     public function detail($k)
     {
@@ -100,9 +141,13 @@ class KelompokController extends Controller
     public function create()
     {
         $jenis_kelompok = JenisKelompok::all();
-        $users = User::select('users.id', 'users.nama_user')->where('roles', '=', 'kelompok')
+
+        $users = User::select('users.id', 'users.nama_user')
         ->join('dokumen_administrasi', 'dokumen_administrasi.user_id', '=', 'users.id')
-        ->where('dokumen_administrasi.status_persetujuan', '=', 'disetujui');
+        ->where('users.roles', '=', 'kelompok')
+        ->where('dokumen_administrasi.status_persetujuan', '=', 'disetujui')
+        ->get();
+
         return view('kelompok.kelompok_create', compact('jenis_kelompok', 'users'));
     }
 
@@ -136,7 +181,7 @@ class KelompokController extends Controller
 
 
         //TODO add redirect to kelompok list and has notification
-        return redirect()->route('kelompok.index')->with(['status' => 'Data kelompok berhasil ditambahkan']);
+        return redirect()->route('admin.show.uep.index')->with(['status' => 'Data kelompok berhasil ditambahkan']);
     }
 
     public function destroy($k)

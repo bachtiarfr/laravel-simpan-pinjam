@@ -95,14 +95,18 @@
                         <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                     </span>
 
-                    <div class="multi-level {{ Request::route()->getName() == 'kelompok.index' ? 'show' : '' }} collapse"
-                        role="list" id="submenu-app-kelompok" aria-expanded="false">
+                    <div class="multi-level {{ request()->is('admin/kelompok*') ? 'show' : '' }} collapse" role="list"
+                        id="submenu-app-kelompok" aria-expanded="false">
                         <ul class="flex-column nav">
-                            <li class="nav-item {{ Request::route()->getName() == 'show.uep.index' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('show.spp.index') }}"><span>Kelompok UEP</span></a>
+                            <li
+                                class="nav-item {{ Request::route()->getName() == 'admin.show.uep.index' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.show.uep.index') }}"><span>Kelompok
+                                        UEP</span></a>
                             </li>
-                            <li class="nav-item {{ Request::route()->getName() == 'show.spp.index' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('show.spp.index') }}"><span>Kelompok SPP</span></a>
+                            <li
+                                class="nav-item {{ Request::route()->getName() == 'admin.show.spp.index' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.show.spp.index') }}"><span>Kelompok
+                                        SPP</span></a>
                             </li>
                         </ul>
                     </div>
@@ -142,8 +146,8 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ request()->is('direktur/pinjaman-ketua*') ? 'active' : '' }}">
-                    <a href="{{ route('pengajuan-kelompok.index') }}" class="nav-link">
+                <li class="nav-item {{ request()->is('direktur/pinjaman') ? 'active' : '' }}">
+                    <a href="{{ route('pinjaman.list') }}" class="nav-link">
                         <span class="sidebar-icon"><span class="fas fa-database"></span></span>
                         <span>Pinjaman</span>
                     </a>
