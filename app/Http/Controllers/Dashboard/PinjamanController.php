@@ -64,7 +64,7 @@ class PinjamanController extends Controller
                     return "Rp." . number_format($item->nominal, 0, ',', '.');
                 })
                 ->editColumn('jangka_waktu', function ($item) {
-                    return $item->jangka_waktu . " Hari";
+                    return $item->jangka_waktu . " Bulan";
                 })
                 ->editColumn('bagi_hasil', function ($item) {
                     return $item->bagi_hasil . " %";
@@ -104,12 +104,23 @@ class PinjamanController extends Controller
         ]);
 
         $nominal = $request->nominal;
-        $bagi_hasil = 20 / 100;
+        $bunga = 20 / 100;
         $waktu = $request->jangka_waktu;
 
-        $pokok = $nominal / $waktu;
-        $hasil_bagi = $bagi_hasil * $nominal;
-        $perbulan = $pokok + $hasil_bagi;
+        //Pokok per bulan
+        $pokok_per_bulan = $nominal / $waktu;
+
+
+        //total bunga
+        $total_bunga = $bunga * $nominal;
+
+        //hasil bagi per bulan
+        $bunga_per_bulan = $total_bunga / $waktu;
+
+        //pembayaran perbulan
+        $perbulan = $pokok_per_bulan + $bunga_per_bulan;
+
+        //total pembayaran
         $total = $perbulan * $waktu;
 
         $cek_pinjaman_user = Pinjaman::where('id_kelompok', $request->kelompok_id)
@@ -128,8 +139,8 @@ class PinjamanController extends Controller
                 'nominal' => $nominal,
                 'bagi_hasil' => 20,
                 'jangka_waktu' => $request->jangka_waktu,
-                'bayar_pokok' => $pokok,
-                'hasil_bagi' => $hasil_bagi,
+                'bayar_pokok' => $pokok_per_bulan,
+                'hasil_bagi' =>  $total_bunga,
                 'bayar_perbulan' => $perbulan,
                 'total' => $total,
                 'keterangan' => $request->keterangan,

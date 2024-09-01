@@ -178,13 +178,27 @@
         function updatePerbulan() {
             const pinjam = parseFloat(nominal.value) || 0;
             const waktu = parseFloat(jangka_waktu.value) || 0;
+            const bunga = 20 / 100;
 
             if (pinjam > 0 && waktu > 0) {
-                const bagi_hasil = 20 / 100;
-                const pokok = pinjam / waktu;
-                const bagiHasil = bagi_hasil * pinjam;
-                const total = pokok + bagiHasil;
-                document.getElementById('perbulan').value = total.toFixed(2);
+                //pokok per bulan
+                const pokokPerBulan = pinjam / waktu;
+
+                //total bunga
+                const totalBunga = bunga * pinjam;
+
+                //hasil bagi per bulan
+                const bungaPerBulan = totalBunga / waktu;
+
+                //pembayaran per bulan
+                const perbulan = pokokPerBulan + bungaPerBulan;
+
+
+                console.log("pokokPerBulan wir --> ", pokokPerBulan)
+                console.log("bungaPerBulan wir --> ", bungaPerBulan)
+                console.log("perbulan wir --> ", perbulan)
+
+                document.getElementById('perbulan').value = perbulan.toFixed(2);
             } else {
                 document.getElementById('perbulan').value = 0;
             }

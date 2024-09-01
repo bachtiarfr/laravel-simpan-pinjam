@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
         User::insert([
             'nama_user' => 'ini direktur',
             'email' => 'inidirektur@gmail.com',
-            'password' => bcrypt('jomokbangetwir'),
+            'password' => bcrypt('password'),
             'roles' => 'direktur'
         ]);
 
@@ -50,7 +50,7 @@ class UserSeeder extends Seeder
         User::insert([
             'nama_user' => 'ini anggota wir',
             'email' => 'inianggota@gmail.com',
-            'password' => bcrypt('jomokbangetwir'),
+            'password' => bcrypt('password'),
             'roles' => 'kelompok'
         ]);
     }
